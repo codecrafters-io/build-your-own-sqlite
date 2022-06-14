@@ -1,275 +1,333 @@
-slug: "docker"
-name: "Build your own Docker"
-short_name: "Docker"
-release_status: "live"
+slug: "sqlite"
+name: "Build your own SQLite"
+short_name: "SQLite"
+release_status: "beta"
 
 description_md: |
-  In this challenge, you'll build a toy Docker implementation that can pull an
-  image from [Docker Hub](https://hub.docker.com/) and execute commands in it.
-  Along the way, you'll learn about
-  [chroot](https://en.wikipedia.org/wiki/Chroot), [kernel
-  namespaces](https://en.wikipedia.org/wiki/Linux_namespaces), the [docker
-  registry API](https://docs.docker.com/registry/spec/api/) and much more.
+  In this challenge, you'll build a barebones SQLite implementation that supports
+  basic SQL queries like SELECT. Along the way you'll learn about SQLite's
+  [file format](https://sqlite.org/fileformat.html), how indexed data is
+  stored in B-trees and more.
 
 short_description_md: |
-  Learn about chroot, kernel namespaces, the docker registry API and more
+  Learn about parsing SQL syntax, SQLite's file format, how indexed data is stored in B-trees and more
 
-completion_percentage: 30
+completion_percentage: 5
 
-early_access_languages: ["rust"]
-supported_languages: ["c", "go", "nim", "php"]
+supported_languages: ["python", "go", "javascript"]
+early_access_languages: ["csharp", "rust"]
 
 starter_repos:
-  c: https://github.com/codecrafters-io/docker-starter-c
-  go: https://github.com/codecrafters-io/docker-starter-go
-  nim: https://github.com/codecrafters-io/docker-starter-nim
-  php: https://github.com/codecrafters-io/docker-starter-php
-  rust: https://github.com/codecrafters-io/docker-starter-rust
+  csharp: https://github.com/codecrafters-io/sqlite-starter-csharp
+  go: https://github.com/codecrafters-io/sqlite-starter-go
+  javascript: https://github.com/codecrafters-io/sqlite-starter-javascript
+  python: https://github.com/codecrafters-io/sqlite-starter-python
+  rust: https://github.com/codecrafters-io/sqlite-starter-rust
 
 marketing:
-  description: Learn about chroot, kernel namespaces, the docker registry API and more
-  difficulty: medium
+  description: Learn about SQLite's file format, how indexed data is stored in B-trees and more.
+  difficulty: hard
   introduction_md: |
-    In this challenge, you'll build a toy Docker implementation that can pull an
-    image from [Docker Hub](https://hub.docker.com/) and execute commands in it.
-    Along the way, you'll learn about
-    [chroot](https://en.wikipedia.org/wiki/Chroot), [kernel
-    namespaces](https://en.wikipedia.org/wiki/Linux_namespaces), the [docker
-    registry API](https://docs.docker.com/registry/spec/api/) and much more.
+    In this challenge, you'll build a barebones SQLite implementation that supports
+    basic SQL queries like SELECT. Along the way you'll learn about SQLite's
+    [file format](https://sqlite.org/fileformat.html), how indexed data is
+    stored in B-trees and more.
   testimonials:
-    - author_name: "Raghav Dua"
-      author_description: "SRE, Coinbase"
-      author_avatar: "https://codecrafters.io/images/testimonials/raghav_dua.jpeg"
-      link: "https://github.com/duaraghav8"
+    - author_name: "Ananthalakshmi Sankar"
+      author_description: "Automation Team, Apple"
+      author_avatar: "https://codecrafters.io/images/testimonials/ananthalakshmi_sankar.jpeg"
+      link: "https://github.com/anu294"
       text: |
-        I spent a full day on your Docker building course and ended up building the whole thing myself. As a SRE (and
-        mostly a user of docker), digging into the internals blew me away.
-    - author_name: "Maya Farber Brodsky"
-      author_description: "Student, Tel Aviv University"
-      author_avatar: "https://codecrafters.io/images/testimonials/maya_farber_brodsky.png"
-      link: "https://github.com/mfarberbrodsky"
+        There are few sites I like as much that have a step by step guide. The real-time feedback is so good, it's creepy!
+    - author_name: "Pranjal Paliwal"
+      author_description: "Software Engineer, Headout"
+      author_avatar: "https://codecrafters.io/images/testimonials/pranjal_paliwal.jpeg"
+      link: "https://github.com/betterclever"
       text: |
-        I've started the Docker challenge, enjoying it a lot so far. Just the
-        right level of guidance, helpful and still gives you a lot of freedom
-        to explore and learn for yourself.
+        Enjoying programming all over again. It's been a while since I wrote Rust, but getting a good hang of it.
 
 stages:
   - slug: "init"
-    name: "Execute a program"
+    name: "Print number of tables"
     difficulty: very_easy
     description_md: |
-      Your task is to implement a very basic version 
-      of [`docker run`](https://docs.docker.com/engine/reference/run/)</a>. It will
-      be executed similar to `docker run`:
+      In this stage, you'll implement one of SQLite's
+      [dot-commands](https://www.sqlite.org/cli.html#special_commands_to_sqlite3_dot_commands_): `.dbinfo`. This
+      command prints metadata about a SQLite database file.
+
+      The command is executed like this:
 
       ```
-      your_docker run ubuntu:latest /usr/local/bin/docker-explorer echo hey
+      $ sqlite3 sample.db .dbinfo
       ```
 
-      [docker-explorer](https://github.com/codecrafters-io/docker-explorer) is a custom test program that exposes
-      commands like `echo` and `ls`.
+      It prints output in this format:
 
-      For now, don't worry about pulling the `ubuntu:latest` image. We will just
-      execute a local program for this stage and print its output. You'll work on 
-      pulling images from Docker Hub in stage 6.
+      ```
+      database page size:  4096
+      write format:        1
+      read format:         1
+
+      ...
+
+      number of tables:    5
+      schema size:         330
+      data version:        1
+      ```
+
+      We're only going to focus on one of these values: `number of tables`. To find the number of tables, you'll need
+      to count the number of rows in the
+      [`sqlite_schema`](https://www.sqlite.org/fileformat.html#storage_of_the_sql_database_schema) table.
+
+      Here's how the tester will execute your program:
+
+      ```
+      $ ./your_sqlite3.sh sample.db .dbinfo
+      ```
+
+      and here's the output it expects:
+
+      ```
+      number of tables: 2
+      ```
     marketing_md: |
-      In this stage, you'll execute a program using `fork` + `exec`.
+      In this stage, you'll implement one of SQLite's
+      [dot-commands](https://www.sqlite.org/cli.html#special_commands_to_sqlite3_dot_commands_): `.dbinfo`. This command
+      prints metadata related a SQLite database, and you'll implement one of these values: the number of
+      tables. You'll do this by parsing a file that uses the
+      [SQLite database file format](https://www.sqlite.org/fileformat.html).
 
-  - slug: "stdio"
-    name: "Wireup stdout & stderr"
+  - slug: "table_names"
+    name: "Print table names"
     difficulty: easy
     description_md: |
-      You'll now pipe the program's stdout and stderr to the
-      parent process.
+      In this stage, you'll implement another dot-command:
+      [`.tables`](https://www.sqlite.org/cli.html#special_commands_to_sqlite3_dot_commands_).
 
-      Like the last stage, the tester will run your program like this:
+      Here's how the tester will execute your program:
 
       ```
-      your_docker run ubuntu:latest /usr/local/bin/docker-explorer echo hey
+      $ ./your_sqlite3.sh sample.db .tables
       ```
-      
-      To test this behaviour locally, you could use the `echo` + `echo_stderr`
-      commands that `docker-explorer` exposes. Run `docker-explorer --help` to
-      view usage.
 
-      If you've got any logs or print statements in your code, make sure to remove
-      them. The tester can't differentiate between debug logs and the actual
-      output!
+      and here's the output it expects:
 
-      Note: The [README]({{readme_url}}) contains setup
-      information for this stage and beyond (takes < 5 min).
+      ```
+      apples   oranges
+      ```
+
+      Notice how the table names are formatted with more than one space between each other? That's because `sqlite3`
+      formats its output so that every value has a fixed-width. Your program doesn't need to mimic this behaviour. Using
+      just one space as a separator should work. Both `apples oranges` and <code>apples &nbsp; oranges</code> will pass
+      our tests.
     marketing_md: |
-      In this stage, you'll relay the child program's stdout & stderr to the
-      parent process.
+      In this stage, you'll implement another dot-command:
+      [`.tables`](https://www.sqlite.org/cli.html#special_commands_to_sqlite3_dot_commands_). Instead of just printing
+      the count of tables like in the previous stage, you'll print out the names of tables too.
 
-  - slug: "exit_code"
-    name: "Handle exit codes"
-    difficulty: easy
-    description_md: |
-      In this stage, you'll need to relay the program's exit code to the parent
-      process.
-
-      If the program you're executing exits with exit code 1, your program
-      should exit with exit code 1 too.
-
-      To test this behaviour locally, you could use the `exit` command that
-      `docker-explorer` exposes. Run `docker-explorer --help` to view usage.
-
-      Just like the previous stage, the tester will run your program like this:
-
-      ```
-      your_docker run ubuntu:latest /usr/local/bin/docker-explorer exit 1
-      ```
-    marketing_md: |
-      In this stage, you'll wait for the child program's exit code and exit with
-      it.
-
-  - slug: "fs_isolation"
-    name: "Filesystem isolation"
+  - slug: "row_counts"
+    name: "Count rows in a table"
     difficulty: medium
     description_md: |
-      In the previous stage, we executed a program that existed locally on our
-      machine. This program had write access to the whole filesystem, which
-      means that it could do **dangerous** things!
+      Now that you've gotten your feet wet with the [SQLite database file format](https://www.sqlite.org/fileformat.html),
+      it's time to move on to actual SQL!
 
-      In this stage, you'll use [chroot](https://en.wikipedia.org/wiki/Chroot)
-      to ensure that the program you execute doesn't have access to any files on
-      the host machine. Create an empty temporary directory and `chroot` into it
-      when executing the command. You'll need to copy the binary being executed
-      too.
+      In this stage, your program will need to read the count of rows from a table.
 
-      {{#lang_is_rust}}
-      At the time of writing this, the implementation of chroot in Rust's standard library
-      ([std::os::unix::fs::chroot](https://doc.rust-lang.org/std/os/unix/fs/fn.chroot.html)) is still a
-      nightly-only experimental API. We've included [libc](https://crates.io/crates/libc) as a dependency
-      instead.
-      {{/lang_is_rust}}
-
-      {{#lang_is_nim}}
-      Since Nim's [posix module](https://nim-lang.org/docs/posix.html) doesn't
-      have `chroot` defined, you'll need to implement this yourself! For
-      examples on how to do this, view the source for other syscalls like
-      [chdir](https://nim-lang.org/docs/posix.html#chdir%2Ccstring).
-      {{/lang_is_nim}}
-
-      {{#lang_is_go}}
-      When executing your program within the chroot directory, you might run into an error that says
-      `open /dev/null: no such file or directory`. This is because [Cmd.Run()](https://golang.org/pkg/os/exec/#Cmd.Run)
-      and its siblings expect `/dev/null` to be present. You can work around this by either creating an empty
-      `/dev/null` file inside the chroot directory, or by ensuring that `Cmd.Stdout`, `Cmd.Stderr` and `Cmd.Stdin` are not `nil`.
-      More details about this [here](https://rohitpaulk.com/articles/cmd-run-dev-null).
-      {{/lang_is_go}}
-
-      {{#lang_is_rust}}
-      When executing your program within the chroot directory, you might run into an error that says
-      `no such file or directory` even if the binary exists within the chroot. This is because
-      [Command::output()](https://doc.rust-lang.org/std/process/struct.Command.html#method.output)
-      expects `/dev/null` to be present. You can work around this by either creating an empty
-      `/dev/null` file inside the chroot directory. This cryptic error effects Go programs too, more details
-      [here](https://rohitpaulk.com/articles/cmd-run-dev-null).
-      {{/lang_is_rust}}
-
-      Just like the previous stage, the tester will run your program like this:
+      Here's how the tester will execute your program:
 
       ```
-      your_docker run ubuntu:latest /usr/local/bin/docker-explorer ls /some_dir
+      $ ./your_sqlite3.sh sample.db "SELECT COUNT(*) FROM apples"
       ```
+
+      and here's the output it expects:
+
+      ```
+      4
+      ```
+
+      You'll need to read the table's row from the [`sqlite_schema`](https://www.sqlite.org/schematab.html) table and
+      follow the `rootpage` value to visit the page corresponding to the table. For now you can assume that the contents
+      of the table are small enough to fit inside the root page. We'll deal with tables that span multiple pages in
+      stage 7.
+
+      Remember: You don't need to implement a full-blown SQL parser just yet. We'll get to that in the
+      next stages. For now you can just split the input by " " and pick the last item to get the table name.
     marketing_md: |
-      In this stage, you'll restrict a program's access to the host filesystem
-      by using [chroot](https://en.wikipedia.org/wiki/Chroot).
+      Now that you've gotten your feet wet with the [SQLite database file format](https://www.sqlite.org/fileformat.html),
+      it's time to move on to actual SQL!
+      In this stage, your sqlite3 implementation will need to execute a SQL statement of this form:
+      `SELECT COUNT(*) FROM <table>`.
 
-  - slug: "process_isolation"
-    name: "Process isolation"
-    difficulty: medium
-    description_md: |
-      In the previous stage, we guarded against malicious activity by
-      restricting an executable's access to the filesystem.
-
-      There's another resource that needs to be guarded: the process tree. The
-      process you're executing is currently capable of viewing all other
-      processes running on the host system, and sending signals to them.
-
-      In this stage, you'll use [PID
-      namespaces](http://man7.org/linux/man-pages/man7/pid_namespaces.7.html) to
-      ensure that the program you execute has its own isolated process tree.
-      The process being executed must see itself as PID 1.
-
-      {{#lang_is_php}}
-      You'll need to use the `pcntl_unshare` function for this, which was
-      [added in PHP 7.4](https://www.php.net/manual/en/migration74.new-functions.php), and isn't properly documented
-      yet (as of 22 Jan 2021). Here's the [pull request](https://github.com/php/php-src/pull/3760) where it was added.
-      {{/lang_is_php}}
-
-      Just like the previous stage, the tester will run your program like this:
-
-      ```
-      your_docker run ubuntu:latest /usr/local/bin/docker-explorer mypid
-      ```
-    marketing_md: |
-      In this stage, you'll restrict a program's access to the host's process
-      tree by using [PID
-      namespaces](http://man7.org/linux/man-pages/man7/pid_namespaces.7.html).
-
-  - slug: "fetch_from_registry"
-    name: "Fetch an image from the Docker Registry"
+  - slug: "read_single_column"
+    name: "Read data from a single column"
     difficulty: hard
     description_md: |
-      Your docker implementation can now execute a program with a fair degree of
-      isolation - it can't modify files or interact with processes running on
-      the host.
+      Now that you're comfortable with jumping across database pages, let's dig a little deeper and read data from
+      rows in a table.
 
-      In this stage, you'll use [the Docker registry
-      API](https://docs.docker.com/registry/spec/api/) to fetch the contents of
-      a public image on [Docker Hub](https://hub.docker.com/) and then execute a
-      command within it.
-
-      You'll need to:
-
-      - Do a small [authentication dance](https://docs.docker.com/registry/spec/auth/token/)
-      - Fetch the [image manifest](https://docs.docker.com/registry/spec/api/#pulling-an-image-manifest)
-      - [Pull layers](https://docs.docker.com/registry/spec/api/#pulling-a-layer) of an image and extract them to the chroot directory
-
-      The base URL for Docker Hub's public registry is `registry.hub.docker.com`.
-
-      The tester will run your program like this:
+      Here's how the tester will execute your program:
 
       ```
-      your_docker run ubuntu:latest /bin/echo hey
+      $ ./your_sqlite3.sh sample.db "SELECT name FROM apples"
       ```
 
-      The image used will be an [official
-      image](https://docs.docker.com/docker-hub/official_images/) from Docker
-      Hub. For example: [`alpine:latest`](https://hub.docker.com/_/alpine),
-      [`ubuntu:latest`](https://hub.docker.com/_/ubuntu),
-      [`busybox:latest`](https://hub.docker.com/_/busybox). When interacting with the
-      Registry API, you'll need to prepend `library/` to the image names.
+      and here's the output it expects:
 
-      {{#lang_is_rust}}
-      Since Rust doesn't have an archive extraction utility in its stdlib, you
-      might want to shell out and use `tar`.
+      ```
+      Granny Smith
+      Fuji
+      Honeycrisp
+      Golden Delicious
+      ```
 
-      You can use the [reqwest](https://crates.io/crates/reqwest) crate to make
-      HTTP requests, we've included it in the `Cargo.toml` file. We've also included
-      [serde_json](https://crates.io/crates/serde_json) to help with parsing JSON.
-      {{/lang_is_rust}}
+      The order of rows returned doesn't matter.
 
+      Rows are stored on disk in the [Record Format](https://www.sqlite.org/fileformat.html#record_format), which is
+      just an ordered sequence of values. To extract data for a single column, you'll need to know the order of that
+      column in the sequence. You'll need to parse the table's `CREATE TABLE` statement to do this. The `CREATE TABLE`
+      statement is stored in the [`sqlite_schema`](https://www.sqlite.org/schematab.html) table's `sql` column.
+
+      {{#lang_is_python}}
+      Not interested in implementing a SQL parser from scratch? [`sqlparse`](https://pypi.org/project/sqlparse/)
+      is available as a dependency if you'd like to use it.
+      {{/lang_is_python}}
       {{#lang_is_go}}
-      Since Go doesn't have an archive extraction utility in its stdlib, you
-      might want to shell out and use `tar`.
+      Not interested in implementing a SQL parser from scratch? [`pingcap/parser`](https://github.com/pingcap/parser)
+      is available as a dependency if you'd like to use it.
       {{/lang_is_go}}
-
-      {{#lang_is_nim}}
-      Since Nim doesn't have an archive extraction utility in its stdlib, you
-      might want to shell out and use `tar`.
-      {{/lang_is_nim}}
-
-      {{#lang_is_c}}
-      Since C doesn't have an archive extraction utility in its stdlib, you
-      might want to shell out and use `tar`.
-
-      You can assume that `libcurl` is available in the build environment.
-      {{/lang_is_c}}
+      {{#lang_is_rust}}
+      Not interested in implementing a SQL parser from scratch? The [`nom`](https://crates.io/crates/nom),
+      [`peg`](https://crates.io/crates/peg) and [`regex`](https://crates.io/crates/regex) crates are available in
+      `Cargo.toml` if you'd like to use them.
+      {{/lang_is_rust}}
     marketing_md: |
-      In this stage, you'll fetch an image from Docker Hub and execute a command
-      in it. You'll need to use [the Docker Registry
-      API](https://docs.docker.com/registry/spec/api/) for this.
+      In this stage, your sqlite3 implementation will need to execute a SQL statement of this form:
+      `SELECT <column> FROM <table>`.
+
+  - slug: "read_multiple_columns"
+    name: "Read data from multiple columns"
+    difficulty: hard
+    description_md: |
+      This stage is similar to the previous one, just that the tester will query for multiple columns instead of just
+      one.
+
+      Here's how the tester will execute your program:
+
+      ```
+      $ ./your_sqlite3.sh sample.db "SELECT name, color FROM apples"
+      ```
+
+      and here's the output it expects:
+
+      ```
+      Granny Smith|Light Green
+      Fuji|Red
+      Honeycrisp|Blush Red
+      Golden Delicious|Yellow
+      ```
+
+      Just like in the previous stage, the order of rows doesn't matter.
+    marketing_md: |
+      This stage is similar to the previous one, just that you'll read data from multiple columns instead of just one.
+      In this stage, your sqlite3 implementation will need to execute a SQL statement of this form: `SELECT <column1>,<column2> FROM <table>`.
+
+  - slug: "where"
+    name: "Filter data with a WHERE clause"
+    difficulty: hard
+    description_md: |
+      In this stage, you'll support filtering records using a `WHERE` clause.
+
+      Here's how the tester will execute your program:
+
+      ```
+      $ ./your_sqlite3.sh sample.db "SELECT name, color FROM apples WHERE color = 'Yellow'"
+      ```
+
+      and here's the output it expects:
+
+      ```
+      Golden Delicious|Yellow
+      ```
+
+      For now you can assume that the contents of the table are small enough to fit inside the root page. We'll deal
+      with tables that span multiple pages in the next stage.
+    marketing_md: |
+      In this stage, you'll filter records based on a `WHERE` clause. You'll assume that the query can't be served by
+      an index, so you'll visit all records in a table and then filter out the matching ones.
+
+  - slug: "table_scan"
+    name: "Retrieve data using a full-table scan"
+    difficulty: hard
+    description_md: |
+      Time to play with larger amounts of data!
+
+      In this stage you'll deal with the same syntax as before: a query with a `WHERE` clause. However, this time, the
+      table you'll be querying will be larger and it'll span multiple pages.
+
+      Here's how the tester will execute your program:
+
+      ```
+      $ ./your_sqlite3.sh superheroes.db "SELECT id, name FROM superheroes WHERE eye_color = 'Pink Eyes'"
+      ```
+
+      and here's the output it expects:
+
+      ```
+      297|Stealth (New Earth)
+      790|Tobias Whale (New Earth)
+      1085|Felicity (New Earth)
+      2729|Thrust (New Earth)
+      3289|Angora Lapin (New Earth)
+      3913|Matris Ater Clementia (New Earth)
+      ```
+
+      The tester is going to use a sample database of superheroes that is ~1MB in size. You can download a small
+      version of this to test locally, read the **Sample Databases** section in [the README]({{readme_url}}).
+
+      You'll need to traverse a [B-tree](https://en.wikipedia.org/wiki/B-tree) in this stage. If you're unfamiliar with
+      how B-trees work or just need a refresher, Vaidehi Joshi's
+      [Busying Oneself With B-Trees](https://medium.com/basecs/busying-oneself-with-b-trees-78bbf10522e7) is a good place to
+      start. For specifics on how SQLite stores B-trees on disk, read the
+      [B-tree Pages](https://www.sqlite.org/fileformat.html#b_tree_pages) documentation section.
+    marketing_md: |
+      In this stage, you'll filter records based on a `WHERE` clause. You'll assume that the query can't be served by
+      an index, so you'll visit all records in a table and then filter out the matching ones.
+
+  - slug: "index_scan"
+    name: "Retrieve data using an index"
+    difficulty: hard
+    description_md: |
+      In this stage, we'll implement an index scan. Rather than reading _all_ rows in a table and then filtering
+      in-memory, we'll use an index to perform a more intelligent search.
+
+      To test whether your implementation actually uses an index, the tester will use a database is ~1GB in size and
+      expect your program to return query results in less than 3 seconds.
+
+      The test database contains a `companies` table with an index named `idx_companies_country` on the
+      `country` column.
+
+      You can download a small version of this database to test locally, read the **Sample Databases** section in
+      [the README]({{readme_url}}) for details.
+
+      Here's how the tester will execute your program:
+
+      ```
+      $ ./your_sqlite3.sh companies.db "SELECT id, name FROM companies WHERE country = 'eritrea'"
+      ```
+
+      and here's the output it expects:
+
+      ```
+      121311|unilink s.c.
+      2102438|orange asmara it solutions
+      5729848|zara mining share company
+      6634629|asmara rental
+      ```
+
+      You can assume that all queries run by the tester will include `country` in the `WHERE` clause,
+      so they can be served by the index. The tester will run multiple randomized queries and expect all of them
+      to return results in under 3 seconds.
+    marketing_md: |
+      This stage is similar to the previous one, but focuses on enhancing query performance using an index. In this
+      stage, your program will need to read through millions of rows in under 5 seconds.
