@@ -5,7 +5,4 @@
 # CodeCrafters uses this file to test your code. Don't make any changes here!
 #
 # DON'T EDIT THIS!
-set -e
-tmpFile=$(mktemp)
-gcc -lcurl app/*.c -o $tmpFile
-exec "$tmpFile" "$@"
+exec node app/main.js "$@"

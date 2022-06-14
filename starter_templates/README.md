@@ -1,53 +1,73 @@
 This is a starting point for {{language_name}} solutions to the
-["Build Your Own Docker" Challenge](https://codecrafters.io/challenges/docker).
+["Build Your Own SQLite" Challenge](https://codecrafters.io/challenges/sqlite).
 
-In this challenge, you'll build a program that can pull an image from [Docker
-Hub](https://hub.docker.com/) and execute commands in it. Along the way, we'll
-learn about [chroot](https://en.wikipedia.org/wiki/Chroot), [kernel
-namespaces](https://en.wikipedia.org/wiki/Linux_namespaces), the [docker
-registry API](https://docs.docker.com/registry/spec/api/) and much more.
+In this challenge, you'll build a barebones SQLite implementation that supports
+basic SQL queries like `SELECT`. Along the way we'll learn about
+[SQLite's file format](https://www.sqlite.org/fileformat.html), how indexed data
+is [stored in B-trees](https://jvns.ca/blog/2014/10/02/how-does-sqlite-work-part-2-btrees/) and more.
 
 **Note**: If you're viewing this repo on GitHub, head over to
 [codecrafters.io](https://codecrafters.io) to signup for early access.
 
 # Passing the first stage
 
-The entry point for your Docker implementation is `{{ user_editable_file }}`. 
-Study and uncomment the relevant code, and push your changes to pass the first stage:
+The entry point for your SQLite implementation is in `{{ user_editable_file }}`. Study and uncomment the relevant code, and
+push your changes to pass the first stage:
 
 ``` sh
-git add . 
+git add .
 git commit -m "pass 1st stage" # any msg
 git push origin master
 ```
 
-That's all!
+Time to move on to the next stage!
 
 # Stage 2 & beyond
 
 Note: This section is for stages 2 and beyond.
 
-You'll use linux-specific syscalls in this challenge. so we'll run
-your code _inside_ a Docker container. 
+1. Ensure you have `{{ required_executable }}` installed locally
+1. Run `./your_sqlite3.sh` to run your program, which is implemented in
+   `{{ user_editable_file }}`.{{# language_is_rust }} This command compiles your
+   Rust project, so it might be slow the first time you run it. Subsequent runs
+   will be fast.{{/ language_is_rust}}
+1. Commit your changes and run `git push origin master` to submit your solution
+   to CodeCrafters. Test output will be streamed to your terminal.
 
-Please ensure you have 
-[Docker installed](https://docs.docker.com/get-docker/) locally.
+# Sample Databases
 
-Next, add a [shell alias](https://shapeshed.com/unix-alias/):
+To make it easy to test queries locally, we've added a sample database in the root
+of this repository: `sample.db`.
 
-``` sh
-alias mydocker='docker build -t mydocker . && docker run --cap-add="SYS_ADMIN" mydocker'
-```
+This contains two tables: `apples` & `oranges`. You can use this
+to test your implementation for the first 6 stages.
 
-(The `--cap-add="SYS_ADMIN"` flag is required to create [PID Namespaces](https://man7.org/linux/man-pages/man7/pid_namespaces.7.html))
-
-You can now execute your program like this:
+You can explore this database by running queries against it like this:
 
 ```sh
-mydocker run ubuntu:latest /usr/local/bin/docker-explorer echo hey
+$ sqlite3 sample.db "select id, name from apples"
+1|Granny Smith
+2|Fuji
+3|Honeycrisp
+4|Golden Delicious
 ```
 
-{{# language_is_rust }}This command compiles your
-Rust project, so it might be slow the first time you run it. Subsequent runs
-will be fast.{{/ language_is_rust}}
+There are two other databases that you can use:
 
+1. `superheroes.db`:
+   - This is a small version of the test database used in the table-scan stage.
+   - It contains one table: `superheroes`.
+   - It is ~1MB in size.
+1. `companies.db`:
+   - This is a small version of the test database used in the index-scan stage.
+   - It contains one table: `companies`, and one index: `idx_companies_country`
+   - It is ~7MB in size.
+
+These aren't included in the repository because they're large in size. You can download them by running this script:
+
+```sh
+./download_sample_databases.sh
+```
+
+If the script doesn't work for some reason, you can download the databases directly from
+[codecrafters-io/sample-sqlite-databases](https://github.com/codecrafters-io/sample-sqlite-databases).
