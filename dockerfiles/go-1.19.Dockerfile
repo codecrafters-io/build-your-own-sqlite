@@ -1,5 +1,7 @@
 FROM golang:1.19-alpine
 
+ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="go.mod,go.sum"
+
 COPY go.mod /app/go.mod
 COPY go.sum /app/go.sum
 

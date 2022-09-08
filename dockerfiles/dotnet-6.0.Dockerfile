@@ -1,5 +1,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:6.0-bullseye-slim
 
+ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="codecrafters-sqlite.csproj,codecrafters-sqlite.sln"
+
 COPY codecrafters-sqlite.csproj /app/codecrafters-sqlite.csproj
 COPY codecrafters-sqlite.sln /app/codecrafters-sqlite.sln
 
