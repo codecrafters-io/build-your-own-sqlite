@@ -1,5 +1,7 @@
 FROM jfloff/alpine-python:3.8
 
+ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="Pipfile,Pipfile.lock"
+
 RUN pip install pipenv
 
 COPY Pipfile /app/Pipfile
