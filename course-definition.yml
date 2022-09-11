@@ -15,7 +15,7 @@ short_description_md: |
 completion_percentage: 5
 
 supported_languages: ["python", "go", "javascript"]
-early_access_languages: ["csharp", "rust"]
+early_access_languages: ["csharp", "rust", "swift"]
 
 starter_repos:
   csharp: https://github.com/codecrafters-io/sqlite-starter-csharp
@@ -23,6 +23,7 @@ starter_repos:
   javascript: https://github.com/codecrafters-io/sqlite-starter-javascript
   python: https://github.com/codecrafters-io/sqlite-starter-python
   rust: https://github.com/codecrafters-io/sqlite-starter-rust
+  swift: https://github.com/codecrafters-io/sqltie-starter-swift
 
 marketing:
   description: Learn about SQLite's file format, how indexed data is stored in B-trees and more.
