@@ -1,4 +1,4 @@
-﻿using codecrafters_sqlite;
+using codecrafters_sqlite;
 
 using static System.Buffers.Binary.BinaryPrimitives;
 
