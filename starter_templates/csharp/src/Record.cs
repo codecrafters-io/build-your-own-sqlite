@@ -1,4 +1,4 @@
-﻿namespace codecrafters_sqlite;
+namespace codecrafters_sqlite;
 
 public record Record(ReadOnlyMemory<byte>[] Columns)
 {
