@@ -1,4 +1,4 @@
-﻿namespace codecrafters_sqlite;
+namespace codecrafters_sqlite;
 
 using static System.Buffers.Binary.BinaryPrimitives;
 
