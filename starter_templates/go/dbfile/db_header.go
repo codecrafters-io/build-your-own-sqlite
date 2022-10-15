@@ -5,6 +5,8 @@ import (
 	"io"
 )
 
+const Magic = "SQLite format 3"
+
 type DBHeader struct {
 	page
 }

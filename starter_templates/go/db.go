@@ -21,8 +21,6 @@ type (
 	}
 )
 
-const Magic = "SQLite format 3"
-
 func Open(file string) (*DB, error) {
 	f, err := os.OpenFile(file, os.O_RDONLY, 0644)
 	if err != nil {
@@ -34,7 +32,7 @@ func Open(file string) (*DB, error) {
 		return nil, fmt.Errorf("read db header: %w", err)
 	}
 
-	if h.Magic() != Magic {
+	if h.Magic() != dbfile.Magic {
 		return nil, fmt.Errorf("not an sqlite3 database")
 	}
 
