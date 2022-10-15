@@ -4,13 +4,12 @@ import (
 	"fmt"
 	"github/com/codecrafters-io/sqlite-starter-go"
 	"os"
-	"path/filepath"
 )
 
 // Usage: your_sqlite3.sh sample.db .dbinfo
 func main() {
 	if len(os.Args) < 3 {
-		fmt.Fprintf(os.Stderr, "usage: %v <sample.db> <command>\n", filepath.Base(os.Args[0]))
+		fmt.Fprintf(os.Stderr, "usage: mysqlite3 <sample.db> <command>\n")
 		os.Exit(1)
 	}
 

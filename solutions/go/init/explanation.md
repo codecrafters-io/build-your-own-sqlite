@@ -4,6 +4,11 @@ Study and uncomment the relevant code:
 
 ```go
 // Uncomment this to pass the first stage
+info, err := db.Info()
+if err != nil {
+	return fmt.Errorf("get db info: %w", err)
+}
+
 fmt.Printf("number of tables: %v\n", info.Tables)
 ```
 
