@@ -35,5 +35,28 @@ func (d *DB) readTable(page int) (*Table, error) {
 }
 
 func (t *Table) rows() (int, error) {
-	return t.root.Cells(), nil
+	var n int
+
+	err := t.walk(t.root, func(p dbfile.BTreePage) error {
+		if !p.IsLeaf() {
+			return nil
+		}
+
+		n += p.Cells()
+
+		return nil
+	})
+	if err != nil {
+		return 0, fmt.Errorf("walk b-tree: %w", err)
+	}
+
+	return n, nil
+}
+
+func (t *Table) walk(p dbfile.BTreePage, f func(p dbfile.BTreePage) error) error {
+	if p.IsLeaf() {
+		return f(p)
+	}
+
+	panic("implement walking interior pages here")
 }

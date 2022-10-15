@@ -18,7 +18,7 @@ B-Tree page header layout
 	cells               uint16
 	cellContent         uint16
 	fragmentedFreeBytes uint8
-	rightmostPointer    uint32 // appears only on interion b-tree pages
+	rightmostPointer    uint32 // appears only on interior b-tree pages
 
 */
 
