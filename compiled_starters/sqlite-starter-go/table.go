@@ -59,8 +59,4 @@ func (t *Table) walk(p dbfile.BTreePage, f func(p dbfile.BTreePage) error) error
 	}
 
 	panic("implement walking interior pages here")
-
-	for i := 0; i < p.Cells(); i++ {
-		// c := p.Cell(i)
-	}
 }
