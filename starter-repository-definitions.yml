@@ -36,16 +36,6 @@
       target: sample.db
     - source: starter_templates/download_sample_databases.sh
       target: download_sample_databases.sh
-    - source: starter_templates/go/app/main.go
-      target: app/main.go
-    - source: starter_templates/go/app/record_parser.go
-      target: app/record_parser.go
-    - source: starter_templates/go/app/varint_parser.go
-      target: app/varint_parser.go
-    - source: starter_templates/go/app/int_parser.go
-      target: app/int_parser.go
-    - source: starter_templates/go/app/page_header.go
-      target: app/page_header.go
     - source: starter_templates/go/go.mod
       target: go.mod
     - source: starter_templates/go/go.sum
@@ -54,9 +44,21 @@
       target: .gitignore
     - source: starter_templates/go/your_sqlite3.sh
       target: your_sqlite3.sh
+    - source: starter_templates/go/cmd/mysqlite3/main.go
+      target: cmd/mysqlite3/main.go
+    - source: starter_templates/go/db.go
+      target: db.go
+    - source: starter_templates/go/table.go
+      target: table.go
+    - source: starter_templates/go/dbfile/page.go
+      target: dbfile/page.go
+    - source: starter_templates/go/dbfile/b_tree_page.go
+      target: dbfile/b_tree_page.go
+    - source: starter_templates/go/dbfile/db_header.go
+      target: dbfile/db_header.go
   template_attributes:
     required_executable: "go (1.16)"
-    user_editable_file: "app/main.go"
+    user_editable_file: "cmd/mysqlite3/main.go"
 
 - language: javascript
   file_mappings:
