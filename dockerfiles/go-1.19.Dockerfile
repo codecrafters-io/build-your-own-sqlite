@@ -1,7 +1,5 @@
 FROM golang:1.19-alpine
 
-ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="go.mod,go.sum"
-
 COPY go.mod /app/go.mod
 COPY go.sum /app/go.sum
 
@@ -13,3 +11,6 @@ RUN go mod download
 # Let's run go get on each module so that they're built ahead of time.
 # Ref: https://github.com/montanaflynn/golang-docker-cache
 RUN go mod graph | awk '{if ($1 !~ "@") print $2}' | xargs go get
+
+ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="go.mod,go.sum"
+

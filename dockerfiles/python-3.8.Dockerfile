@@ -1,7 +1,5 @@
 FROM jfloff/alpine-python:3.8
 
-ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="Pipfile,Pipfile.lock"
-
 RUN pip install pipenv
 
 COPY Pipfile /app/Pipfile
@@ -15,3 +13,5 @@ RUN pipenv install
 
 # Force environment creation
 RUN pipenv run python3 -c "import sqlparse" # Ensure the deps are available
+
+ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="Pipfile,Pipfile.lock"

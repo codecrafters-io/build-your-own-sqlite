@@ -1,7 +1,5 @@
 FROM mcr.microsoft.com/dotnet/sdk:6.0-bullseye-slim
 
-ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="codecrafters-sqlite.csproj,codecrafters-sqlite.sln"
-
 COPY codecrafters-sqlite.csproj /app/codecrafters-sqlite.csproj
 COPY codecrafters-sqlite.sln /app/codecrafters-sqlite.sln
 
@@ -18,3 +16,6 @@ RUN mv /app/bin /app-cached/bin
 
 RUN echo "cd \${CODECRAFTERS_SUBMISSION_DIR} && dotnet build --configuration Release ." > /codecrafters-precompile.sh
 RUN chmod +x /codecrafters-precompile.sh
+
+ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="codecrafters-sqlite.csproj,codecrafters-sqlite.sln"
+
