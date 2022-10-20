@@ -16,9 +16,6 @@ func main() {
 	dbPath := os.Args[1]
 	command := os.Args[2]
 
-	// You can use print statements as follows for debugging, they'll be visible when running tests.
-	fmt.Println("Logs from your program will appear here!")
-
 	var err error
 
 	switch command {
@@ -46,6 +43,9 @@ func dbinfo(dbpath string) (err error) {
 			err = fmt.Errorf("close db: %w", e)
 		}
 	}()
+
+	// You can use print statements as follows for debugging, they'll be visible when running tests.
+	fmt.Println("Logs from your program will appear here!")
 
 	// Uncomment this to pass the first stage
 	// info, err := db.Info()

@@ -1,28 +1,4 @@
-@@ -1,59 +1,55 @@
- package main
-
- import (
- 	"fmt"
- 	"github/com/codecrafters-io/sqlite-starter-go"
- 	"os"
- )
-
- // Usage: your_sqlite3.sh sample.db .dbinfo
- func main() {
- 	if len(os.Args) < 3 {
- 		fmt.Fprintf(os.Stderr, "usage: mysqlite3 <sample.db> <command>\n")
- 		os.Exit(1)
- 	}
-
- 	dbPath := os.Args[1]
- 	command := os.Args[2]
-
--	// You can use print statements as follows for debugging, they'll be visible when running tests.
--	fmt.Println("Logs from your program will appear here!")
--
- 	var err error
-
- 	switch command {
+@@ -22,38 +22,34 @@
  	case ".dbinfo":
  		err = dbinfo(dbPath)
  	default:
@@ -48,6 +24,13 @@
  		}
  	}()
 
+-	// You can use print statements as follows for debugging, they'll be visible when running tests.
+-	fmt.Println("Logs from your program will appear here!")
++	info, err := db.Info()
++	if err != nil {
++		return fmt.Errorf("get db info: %w", err)
++	}
+
 -	// Uncomment this to pass the first stage
 -	// info, err := db.Info()
 -	// if err != nil {
@@ -55,11 +38,6 @@
 -	// }
 -	//
 -	// fmt.Printf("number of tables: %v\n", info.Tables)
-+	info, err := db.Info()
-+	if err != nil {
-+		return fmt.Errorf("get db info: %w", err)
-+	}
-+
 +	fmt.Printf("number of tables: %v\n", info.Tables)
 
  	return nil

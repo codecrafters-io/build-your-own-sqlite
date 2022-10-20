@@ -11,7 +11,7 @@ type (
 	DB struct {
 		f *os.File
 
-		dbHeader dbfile.DBHeader
+		header dbfile.DBHeader
 
 		pageSize int64
 	}
@@ -27,18 +27,15 @@ func Open(file string) (*DB, error) {
 		return nil, fmt.Errorf("open file: %w", err)
 	}
 
-	h, err := dbfile.ReadDBHeader(f)
+	header, err := dbfile.ReadDBHeader(f)
 	if err != nil {
 		return nil, fmt.Errorf("read db header: %w", err)
 	}
 
-	if h.Magic() != dbfile.Magic {
-		return nil, fmt.Errorf("not an sqlite3 database")
-	}
-
 	d := &DB{
 		f:        f,
-		pageSize: h.PageSize(),
+		header:   header,
+		pageSize: header.PageSize(),
 	}
 
 	return d, nil
@@ -49,12 +46,12 @@ func (d *DB) Close() error {
 }
 
 func (d *DB) Info() (*Info, error) {
-	t, err := d.readTable(1)
+	table, err := d.readTable(1)
 	if err != nil {
 		return nil, fmt.Errorf("read schema: %w", err)
 	}
 
-	rows, err := t.rows()
+	rows, err := table.rows()
 	if err != nil {
 		return nil, fmt.Errorf("count schema rows: %w", err)
 	}

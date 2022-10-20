@@ -22,16 +22,20 @@ B-Tree page header layout
 
 */
 
-type BTreePage struct {
-	page
-	headerSize int
-}
+type (
+	BTreePage struct {
+		page
+		headerSize int
+	}
+
+	PageType byte
+)
 
 const (
-	IndexFlag = 0x2
-	TableFlag = 0x5
-
-	LeafFlag = 0x8
+	InteriorIndex PageType = 0x2
+	InteriorTable PageType = 0x5
+	LeafIndex     PageType = 0xa
+	LeafTable     PageType = 0xd
 )
 
 func ReadBTreePage(r io.ReaderAt, off, size int64) (BTreePage, error) {
@@ -44,7 +48,7 @@ func ReadBTreePage(r io.ReaderAt, off, size int64) (BTreePage, error) {
 		return BTreePage{}, err
 	}
 
-	if p.FlagIs(LeafFlag) {
+	if typ := PageType(p.page.u8(0)); typ == LeafIndex || typ == LeafTable {
 		p.headerSize = 8
 	} else {
 		p.headerSize = 12
@@ -53,11 +57,13 @@ func ReadBTreePage(r io.ReaderAt, off, size int64) (BTreePage, error) {
 	return p, nil
 }
 
-func (p BTreePage) Flags() int { return int(p.u8(0)) }
+func (p BTreePage) PageType() PageType { return PageType(p.u8(0)) }
 
-func (p BTreePage) FlagIs(f int) bool { return p.Flags()&f == f }
+func (p BTreePage) IsLeaf() bool {
+	t := p.PageType()
 
-func (p BTreePage) IsLeaf() bool { return p.FlagIs(LeafFlag) }
+	return t == LeafIndex || t == LeafTable
+}
 
 func (p BTreePage) Cells() int {
 	return int(p.u16(3))
