@@ -2,10 +2,17 @@ package dbfile
 
 import (
 	"bytes"
+	"fmt"
 	"io"
 )
 
-const Magic = "SQLite format 3"
+const magic = "SQLite format 3\000"
+
+func init() {
+	if len(magic) != 16 {
+		panic("bad magic")
+	}
+}
 
 type DBHeader struct {
 	page
@@ -21,16 +28,11 @@ func ReadDBHeader(r io.ReaderAt) (DBHeader, error) {
 		return DBHeader{}, err
 	}
 
-	return h, nil
-}
-
-func (p DBHeader) Magic() string {
-	null := bytes.IndexByte(p.page, '\000')
-	if null == -1 {
-		return ""
+	if !bytes.HasPrefix(h.page, []byte(magic)) {
+		return DBHeader{}, fmt.Errorf("not an sqlite3 database")
 	}
 
-	return string(p.page[:null])
+	return h, nil
 }
 
 func (p DBHeader) PageSize() int64 {

@@ -7,28 +7,26 @@ import (
 
 type (
 	Table struct {
-		root dbfile.BTreePage
+		rootPage dbfile.BTreePage
 	}
 )
 
-func (d *DB) readTable(page int) (*Table, error) {
-	page-- // pages are numbered from 1
-
-	off := d.pageSize * int64(page)
+func (d *DB) readTable(pageNumber int) (*Table, error) {
+	offset := d.pageSize * int64(pageNumber-1) // pages are numbered from 1
 	size := d.pageSize
 
-	if page == 0 {
-		off += 100 // skip db header
+	if pageNumber == 1 { // first page
+		offset += 100 // skip db header
 		size -= 100
 	}
 
-	p, err := dbfile.ReadBTreePage(d.f, off, size)
+	page, err := dbfile.ReadBTreePage(d.f, offset, size)
 	if err != nil {
 		return nil, fmt.Errorf("read page: %w", err)
 	}
 
 	t := &Table{
-		root: p,
+		rootPage: page,
 	}
 
 	return t, nil
@@ -37,12 +35,12 @@ func (d *DB) readTable(page int) (*Table, error) {
 func (t *Table) rows() (int, error) {
 	var n int
 
-	err := t.walk(t.root, func(p dbfile.BTreePage) error {
-		if !p.IsLeaf() {
+	err := t.walk(t.rootPage, func(page dbfile.BTreePage) error {
+		if !page.IsLeaf() {
 			return nil
 		}
 
-		n += p.Cells()
+		n += page.Cells()
 
 		return nil
 	})
@@ -53,9 +51,9 @@ func (t *Table) rows() (int, error) {
 	return n, nil
 }
 
-func (t *Table) walk(p dbfile.BTreePage, f func(p dbfile.BTreePage) error) error {
-	if p.IsLeaf() {
-		return f(p)
+func (t *Table) walk(page dbfile.BTreePage, f func(page dbfile.BTreePage) error) error {
+	if page.IsLeaf() {
+		return f(page)
 	}
 
 	panic("implement walking interior pages here")
