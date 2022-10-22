@@ -2,8 +2,9 @@ package main
 
 import (
 	"fmt"
-	"github/com/codecrafters-io/sqlite-starter-go"
 	"os"
+
+	"github.com/codecrafters-io/sqlite-starter-go"
 )
 
 // Usage: your_sqlite3.sh sample.db .dbinfo

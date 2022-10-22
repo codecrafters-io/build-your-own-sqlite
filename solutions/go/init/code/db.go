@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github/com/codecrafters-io/sqlite-starter-go/dbfile"
+	"github.com/codecrafters-io/sqlite-starter-go/dbfile"
 )
 
 type (

@@ -1,4 +1,4 @@
-@@ -22,38 +22,34 @@
+@@ -23,38 +23,34 @@
  	case ".dbinfo":
  		err = dbinfo(dbPath)
  	default:

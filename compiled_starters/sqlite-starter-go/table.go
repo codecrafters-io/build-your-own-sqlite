@@ -2,7 +2,8 @@ package sqlite
 
 import (
 	"fmt"
-	"github/com/codecrafters-io/sqlite-starter-go/dbfile"
+
+	"github.com/codecrafters-io/sqlite-starter-go/dbfile"
 )
 
 type (
