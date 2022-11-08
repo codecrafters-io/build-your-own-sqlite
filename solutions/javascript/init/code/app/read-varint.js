@@ -28,7 +28,7 @@ function usableValue(usableSize, byte) {
 async function readUsableBytes(databaseFile) {
   const usableBytes = [];
 
-  for (let i = 0; i < 8; i++) {
+  for (let i = 0; i < 9; i++) {
     const byte = await readInt(databaseFile, 1);
     usableBytes.push(byte);
 

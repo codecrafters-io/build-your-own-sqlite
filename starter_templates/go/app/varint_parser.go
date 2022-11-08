@@ -37,7 +37,7 @@ func usableValue(usableSize int, usableByteAsInt int) int {
 func readUsableBytesAsInts(stream io.Reader) []int {
 	var usableBytesAsInts []int
 
-	for i := 0; i <= 8; i++ {
+	for i := 0; i < 9; i++ {
 		byteAsInt := parseUInt8(stream)
 		usableBytesAsInts = append(usableBytesAsInts, int(byteAsInt))
 
