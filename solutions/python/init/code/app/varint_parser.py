@@ -28,7 +28,7 @@ def usable_value(usable_size, byte):
 def read_usable_bytes(stream):
     usable_bytes = []
 
-    for i in range(8):
+    for i in range(9):
         byte = int.from_bytes(stream.read(1), "big")
         usable_bytes.append(byte)
 
