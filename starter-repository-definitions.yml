@@ -23,7 +23,7 @@
     - source: starter_templates/python/your_sqlite3.sh
       target: your_sqlite3.sh
   template_attributes:
-    required_executable: "python (3.8)"
+    required_executable: "python (3.8+)"
     user_editable_file: "app/main.py"
 
 - language: go
