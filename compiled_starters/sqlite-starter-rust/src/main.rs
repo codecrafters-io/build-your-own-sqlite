@@ -1,21 +1,7 @@
 use anyhow::{bail, Result};
-use sqlite_starter_rust::{
-    header::PageHeader, record::parse_record, schema::Schema, varint::parse_varint,
-};
-use std::convert::TryInto;
 use std::fs::File;
 use std::io::prelude::*;
 
-/// parses variable size unsigned integer encoded as bytes to number.
-fn parse_number(bytes: &[u8]) -> usize {
-    let mut result: usize = 0;
-    let num_bytes = bytes.len();
-    for i in 0..num_bytes {
-        let shift = (num_bytes - i - 1) * 8;
-        result += (bytes[i] as usize) << shift;
-    }
-    result
-}
 
 fn main() -> Result<()> {
     // Parse arguments
@@ -34,8 +20,9 @@ fn main() -> Result<()> {
             let mut header = [0; 100];
             file.read_exact(&mut header)?;
 
-            // The page size is stored at the 16th byte offset, using 2 bytes in little-endian order
-            let page_size = u16::from_le_bytes([header[16], header[17]]);
+            // The page size is stored at the 16th byte offset, using 2 bytes in big-endian order
+            #[allow(unused_variables)]
+            let page_size = u16::from_be_bytes([header[16], header[17]]);
 
             // You can use print statements as follows for debugging, they'll be visible when running tests.
             println!("Logs from your program will appear here!");

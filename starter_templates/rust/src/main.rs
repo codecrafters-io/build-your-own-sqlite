@@ -1,8 +1,4 @@
 use anyhow::{bail, Result};
-use sqlite_starter_rust::{
-    header::PageHeader, record::parse_record, schema::Schema, varint::parse_varint,
-};
-use std::convert::TryInto;
 use std::fs::File;
 use std::io::prelude::*;
 
@@ -25,6 +21,7 @@ fn main() -> Result<()> {
             file.read_exact(&mut header)?;
 
             // The page size is stored at the 16th byte offset, using 2 bytes in big-endian order
+            #[allow(unused_variables)]
             let page_size = u16::from_be_bytes([header[16], header[17]]);
 
             // You can use print statements as follows for debugging, they'll be visible when running tests.
