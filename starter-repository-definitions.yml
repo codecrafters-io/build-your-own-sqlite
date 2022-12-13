@@ -10,10 +10,6 @@
       target: download_sample_databases.sh
     - source: starter_templates/python/app/main.py
       target: app/main.py
-    - source: starter_templates/python/app/record_parser.py
-      target: app/record_parser.py
-    - source: starter_templates/python/app/varint_parser.py
-      target: app/varint_parser.py
     - source: starter_templates/python/Pipfile
       target: Pipfile
     - source: starter_templates/python/Pipfile.lock
@@ -104,16 +100,6 @@
       target: .gitignore
     - source: starter_templates/rust/src/main.rs
       target: src/main.rs
-    - source: starter_templates/rust/src/header.rs
-      target: src/header.rs
-    - source: starter_templates/rust/src/lib.rs
-      target: src/lib.rs
-    - source: starter_templates/rust/src/record.rs
-      target: src/record.rs
-    - source: starter_templates/rust/src/schema.rs
-      target: src/schema.rs
-    - source: starter_templates/rust/src/varint.rs
-      target: src/varint.rs
     - source: starter_templates/rust/Cargo.toml
       target: Cargo.toml
     - source: starter_templates/rust/Cargo.lock

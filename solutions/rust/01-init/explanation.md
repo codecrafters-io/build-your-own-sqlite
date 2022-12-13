@@ -4,7 +4,7 @@ Study and uncomment the relevant code:
 
 ```rust
 // Uncomment this block to pass the first stage
-println!("number of tables: {}", schemas.len());
+println!("database page size: {}", page_size);
 ```
 
 Push your changes to pass the first stage:
