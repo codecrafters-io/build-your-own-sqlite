@@ -66,16 +66,6 @@
       target: download_sample_databases.sh
     - source: starter_templates/javascript/app/main.js
       target: app/main.js
-    - source: starter_templates/javascript/app/database-file.js
-      target: app/database-file.js
-    - source: starter_templates/javascript/app/read-record.js
-      target: app/read-record.js
-    - source: starter_templates/javascript/app/read-varint.js
-      target: app/read-varint.js
-    - source: starter_templates/javascript/app/read-int.js
-      target: app/read-int.js
-    - source: starter_templates/javascript/app/read-page-header.js
-      target: app/read-page-header.js
     - source: starter_templates/javascript/package.json
       target: package.json
     - source: starter_templates/.gitignore
