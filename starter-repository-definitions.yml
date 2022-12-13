@@ -114,16 +114,6 @@
       target: .gitignore
     - source: starter_templates/csharp/src/Program.cs
       target: src/Program.cs
-    - source: starter_templates/csharp/src/PageHeader.cs
-      target: src/PageHeader.cs
-    - source: starter_templates/csharp/src/Record.cs
-      target: src/Record.cs
-    - source: starter_templates/csharp/src/Schema.cs
-      target: src/Schema.cs
-    - source: starter_templates/csharp/src/Varint.cs
-      target: src/Varint.cs
-    - source: starter_templates/csharp/src/MemoryExtensions.cs
-      target: src/MemoryExtensions.cs
     - source: starter_templates/csharp/codecrafters-sqlite.csproj
       target: codecrafters-sqlite.csproj
     - source: starter_templates/csharp/codecrafters-sqlite.sln
