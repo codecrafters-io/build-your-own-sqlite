@@ -19,7 +19,7 @@
  			log.Fatal(err)
  		}
 
- 		var pageSize int16
+ 		var pageSize uint16
  		if err := binary.Read(bytes.NewReader(header[16:18]), binary.BigEndian, &pageSize); err != nil {
  			fmt.Println("Failed to read integer:", err)
  			return
