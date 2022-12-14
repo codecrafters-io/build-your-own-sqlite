@@ -4,7 +4,7 @@ Study and uncomment the relevant code:
 
 ```go
 // Uncomment this to pass the first stage
-fmt.Printf("number of tables: %v", len(sqliteSchemaRows))
+fmt.Printf("database page size: %v", pageSize)
 ```
 
 Push your changes to pass the first stage:

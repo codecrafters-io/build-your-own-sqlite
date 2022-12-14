@@ -4,7 +4,8 @@ Study and uncomment the relevant code:
 
 ```javascript
 // Uncomment this to pass the first stage
-console.log(`number of tables: ${sqliteSchemaRows.length}`);
+const pageSize = buffer.readUInt16BE(16); // page size is 2 bytes starting at offset 16
+console.log(`database page size: ${pageSize}`);
 ```
 
 Push your changes to pass the first stage:

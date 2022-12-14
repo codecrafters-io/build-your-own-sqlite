@@ -10,10 +10,6 @@
       target: download_sample_databases.sh
     - source: starter_templates/python/app/main.py
       target: app/main.py
-    - source: starter_templates/python/app/record_parser.py
-      target: app/record_parser.py
-    - source: starter_templates/python/app/varint_parser.py
-      target: app/varint_parser.py
     - source: starter_templates/python/Pipfile
       target: Pipfile
     - source: starter_templates/python/Pipfile.lock
@@ -38,14 +34,6 @@
       target: download_sample_databases.sh
     - source: starter_templates/go/app/main.go
       target: app/main.go
-    - source: starter_templates/go/app/record_parser.go
-      target: app/record_parser.go
-    - source: starter_templates/go/app/varint_parser.go
-      target: app/varint_parser.go
-    - source: starter_templates/go/app/int_parser.go
-      target: app/int_parser.go
-    - source: starter_templates/go/app/page_header.go
-      target: app/page_header.go
     - source: starter_templates/go/go.mod
       target: go.mod
     - source: starter_templates/go/go.sum
@@ -55,7 +43,7 @@
     - source: starter_templates/go/your_sqlite3.sh
       target: your_sqlite3.sh
   template_attributes:
-    required_executable: "go (1.16)"
+    required_executable: "go (1.16+)"
     user_editable_file: "app/main.go"
 
 - language: javascript
@@ -70,16 +58,6 @@
       target: download_sample_databases.sh
     - source: starter_templates/javascript/app/main.js
       target: app/main.js
-    - source: starter_templates/javascript/app/database-file.js
-      target: app/database-file.js
-    - source: starter_templates/javascript/app/read-record.js
-      target: app/read-record.js
-    - source: starter_templates/javascript/app/read-varint.js
-      target: app/read-varint.js
-    - source: starter_templates/javascript/app/read-int.js
-      target: app/read-int.js
-    - source: starter_templates/javascript/app/read-page-header.js
-      target: app/read-page-header.js
     - source: starter_templates/javascript/package.json
       target: package.json
     - source: starter_templates/.gitignore
@@ -104,16 +82,6 @@
       target: .gitignore
     - source: starter_templates/rust/src/main.rs
       target: src/main.rs
-    - source: starter_templates/rust/src/header.rs
-      target: src/header.rs
-    - source: starter_templates/rust/src/lib.rs
-      target: src/lib.rs
-    - source: starter_templates/rust/src/record.rs
-      target: src/record.rs
-    - source: starter_templates/rust/src/schema.rs
-      target: src/schema.rs
-    - source: starter_templates/rust/src/varint.rs
-      target: src/varint.rs
     - source: starter_templates/rust/Cargo.toml
       target: Cargo.toml
     - source: starter_templates/rust/Cargo.lock
@@ -138,16 +106,6 @@
       target: .gitignore
     - source: starter_templates/csharp/src/Program.cs
       target: src/Program.cs
-    - source: starter_templates/csharp/src/PageHeader.cs
-      target: src/PageHeader.cs
-    - source: starter_templates/csharp/src/Record.cs
-      target: src/Record.cs
-    - source: starter_templates/csharp/src/Schema.cs
-      target: src/Schema.cs
-    - source: starter_templates/csharp/src/Varint.cs
-      target: src/Varint.cs
-    - source: starter_templates/csharp/src/MemoryExtensions.cs
-      target: src/MemoryExtensions.cs
     - source: starter_templates/csharp/codecrafters-sqlite.csproj
       target: codecrafters-sqlite.csproj
     - source: starter_templates/csharp/codecrafters-sqlite.sln

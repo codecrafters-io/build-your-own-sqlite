@@ -4,7 +4,9 @@ Study and uncomment the relevant code:
 
 ```python
 # Uncomment this to pass the first stage
-print(f"number of tables: {len(sqlite_schema_rows)}")
+database_file.seek(16)  # Skip the first 16 bytes of the header
+page_size = int.from_bytes(database_file.read(2), byteorder="big")
+print(f"database page size: {page_size}")
 ```
 
 Push your changes to pass the first stage:
