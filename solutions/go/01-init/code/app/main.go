@@ -35,7 +35,6 @@ func main() {
 			fmt.Println("Failed to read integer:", err)
 			return
 		}
-
 		fmt.Printf("database page size: %v", pageSize)
 	default:
 		fmt.Println("Unknown command", command)
