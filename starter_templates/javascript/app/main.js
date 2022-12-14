@@ -4,7 +4,7 @@ const databaseFilePath = process.argv[2];
 const command = process.argv[3];
 
 if (command === ".dbinfo") {
-  const databaseFileHandler = await open(databaseFilePath, "r")
+  const databaseFileHandler = await open(databaseFilePath, "r");
 
   const { buffer } = await databaseFileHandler.read({
     length: 100,
