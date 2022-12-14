@@ -2,7 +2,6 @@ use anyhow::{bail, Result};
 use std::fs::File;
 use std::io::prelude::*;
 
-
 fn main() -> Result<()> {
     // Parse arguments
     let args = std::env::args().collect::<Vec<_>>();
