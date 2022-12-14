@@ -8,8 +8,7 @@ var (path, command) = args.Length switch
     _ => (args[0], args[1])
 };
 
-// Read database file into database
-var database = File.ReadAllBytes(path).AsMemory();
+var databaseFile = File.OpenRead(path);
 
 // Parse command and act accordingly
 if (command == ".dbinfo")
@@ -18,8 +17,11 @@ if (command == ".dbinfo")
     Console.WriteLine("Logs from your program will appear here!");
 
     // Uncomment this line to pass the first stage
-    var pageSize = ReadUInt16BigEndian(database[16..17]);
-    Console.WriteLine($"database page size: {pageSize}");
+    // databaseFile.Seek(16, SeekOrigin.Begin); // Skip the first 16 bytes
+    // byte[] pageSizeBytes = new byte[2];
+    // databaseFile.Read(pageSizeBytes, 0, 2);
+    // var pageSize = ReadUInt16BigEndian(pageSizeBytes);
+    // Console.WriteLine($"database page size: {pageSize}");
 }
 else
 {
