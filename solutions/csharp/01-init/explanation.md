@@ -4,8 +4,6 @@ Study and uncomment the relevant code:
 
 ```csharp
 // Uncomment this line to pass the first stage
-var pageSize = ReadUInt16BigEndian(database[16..17]);
-Console.WriteLine($"database page size: {pageSize}");
 ```
 
 Push your changes to pass the first stage:

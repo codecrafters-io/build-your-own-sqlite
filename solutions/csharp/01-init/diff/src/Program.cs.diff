@@ -19,10 +19,8 @@
 -    Console.WriteLine("Logs from your program will appear here!");
 -
 -    // Uncomment this line to pass the first stage
--    // var pageSize = ReadUInt16BigEndian(database[16..17]);
--    // Console.WriteLine($"database page size: {pageSize}");
-+    var pageSize = ReadUInt16BigEndian(database[16..17]);
-+    Console.WriteLine($"database page size: {pageSize}");
+     var pageSize = ReadUInt16BigEndian(database[16..17]);
+     Console.WriteLine($"database page size: {pageSize}");
  }
  else
  {
