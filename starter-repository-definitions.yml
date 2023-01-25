@@ -115,3 +115,23 @@
   template_attributes:
     required_executable: "dotnet (6.0)"
     user_editable_file: "src/Program.cs"
+
+- language: ruby
+  file_mappings:
+    - source: starter_templates/README.md
+      target: README.md
+    - source: starter_templates/codecrafters.yml
+      target: codecrafters.yml
+    - source: starter_templates/sample.db
+      target: sample.db
+    - source: starter_templates/download_sample_databases.sh
+      target: download_sample_databases.sh
+    - source: starter_templates/.gitignore
+      target: .gitignore
+    - source: starter_templates/ruby/app/main.rb
+      target: app/main.rb
+    - source: starter_templates/ruby/your_sqlite3.sh
+      target: your_sqlite3.sh
+  template_attributes:
+    required_executable: "ruby (2.7)"
+    user_editable_file: "app/main.rb"
