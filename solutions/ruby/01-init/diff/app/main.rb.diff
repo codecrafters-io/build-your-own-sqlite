@@ -23,6 +23,4 @@
  if command == ".dbinfo"
    page_size = Database.new(database_file_path).page_size
    puts "database page size: #{page_size}"
--end
-\ No newline at end of file
-+end
+end
