@@ -135,3 +135,25 @@
   template_attributes:
     required_executable: "ruby (2.7+)"
     user_editable_file: "app/main.rb"
+
+- language: swift
+  file_mappings:
+    - source: starter_templates/README.md
+      target: README.md
+    - source: starter_templates/codecrafters.yml
+      target: codecrafters.yml
+    - source: starter_templates/sample.db
+      target: sample.db
+    - source: starter_templates/download_sample_databases.sh
+      target: download_sample_databases.sh
+    - source: starter_templates/swift/.gitignore
+      target: .gitignore
+    - source: starter_templates/swift/Sources/swift-sqlite-challenge/Main.swift
+      target: Sources/swift-sqlite-challenge/Main.swift
+    - source: starter_templates/swift/Package.swift
+      target: Package.swift
+    - source: starter_templates/swift/your_sqlite3.sh
+      target: your_sqlite3.sh
+  template_attributes:
+    required_executable: "swift (5.7)"
+    user_editable_file: "Sources/swift-sqlite-challenge/Main.swift"
