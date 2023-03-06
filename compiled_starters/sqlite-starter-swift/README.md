@@ -32,9 +32,9 @@ Time to move on to the next stage!
 Note: This section is for stages 2 and beyond.
 
 1. Ensure you have `swift (5.7)` installed locally
-2. Run `./your_sqlite3.sh` to run your program, which is implemented in
+1. Run `./your_sqlite3.sh` to run your program, which is implemented in
    `Sources/swift-sqlite-challenge/Main.swift`.
-3. Commit your changes and run `git push origin master` to submit your solution
+1. Commit your changes and run `git push origin master` to submit your solution
    to CodeCrafters. Test output will be streamed to your terminal.
 
 # Sample Databases
