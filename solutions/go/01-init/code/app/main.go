@@ -7,8 +7,7 @@ import (
 	"log"
 	"os"
 	// Available if you need it!
-	// "github.com/pingcap/parser"
-	// "github.com/pingcap/parser/ast"
+	// "github.com/xwb1989/sqlparser"
 )
 
 // Usage: your_sqlite3.sh sample.db .dbinfo
