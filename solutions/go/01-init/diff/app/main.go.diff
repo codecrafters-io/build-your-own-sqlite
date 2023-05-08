@@ -1,4 +1,4 @@
-@@ -13,35 +13,31 @@
+@@ -12,35 +12,31 @@
 
  // Usage: your_sqlite3.sh sample.db .dbinfo
  func main() {
