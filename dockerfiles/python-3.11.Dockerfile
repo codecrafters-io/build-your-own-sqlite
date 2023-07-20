@@ -1,4 +1,4 @@
-FROM jfloff/alpine-python:3.11
+FROM python:3.11-alpine
 
 RUN pip install pipenv
 
