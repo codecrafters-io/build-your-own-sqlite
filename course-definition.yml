@@ -17,26 +17,13 @@ completion_percentage: 5
 
 languages:
   - slug: "csharp"
-    starter_repository_url: "https://github.com/codecrafters-io/sqlite-starter-csharp"
-
   - slug: "go"
-    starter_repository_url: "https://github.com/codecrafters-io/sqlite-starter-go"
-
   - slug: "javascript"
-    starter_repository_url: "https://github.com/codecrafters-io/sqlite-starter-javascript"
-
   - slug: "python"
-    starter_repository_url: "https://github.com/codecrafters-io/sqlite-starter-python"
-
   - slug: "ruby"
-    starter_repository_url: "https://github.com/codecrafters-io/sqlite-starter-ruby"
     release_status: "beta"
-
   - slug: "rust"
-    starter_repository_url: "https://github.com/codecrafters-io/sqlite-starter-rust"
-
   - slug: "swift"
-    starter_repository_url: "https://github.com/codecrafters-io/sqlite-starter-swift"
     release_status: "alpha"
     alpha_tester_usernames: ["Terky"]
 
@@ -334,7 +321,7 @@ stages:
       ```
 
       The tester is going to use a sample database of superheroes that is ~1MB in size. You can download a small
-      version of this to test locally, read the **Sample Databases** section in [the README]({{readme_url}}).
+      version of this to test locally, read the **Sample Databases** section in the **README** of your repository.
 
       You'll need to traverse a [B-tree](https://en.wikipedia.org/wiki/B-tree) in this stage. If you're unfamiliar with
       how B-trees work or just need a refresher, Vaidehi Joshi's
@@ -358,8 +345,8 @@ stages:
       The test database contains a `companies` table with an index named `idx_companies_country` on the
       `country` column.
 
-      You can download a small version of this database to test locally, read the **Sample Databases** section in
-      [the README]({{readme_url}}) for details.
+      You can download a small version of this database to test locally, read the **Sample Databases** section in the **README** 
+      of your repository for details.
 
       Here's how the tester will execute your program:
 
