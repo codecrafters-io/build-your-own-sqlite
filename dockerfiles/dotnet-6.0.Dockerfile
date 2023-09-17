@@ -14,6 +14,9 @@ RUN mkdir /app-cached
 RUN mv /app/obj /app-cached/obj
 RUN mv /app/bin /app-cached/bin
 
+# Overwrite Program.cs to remove the echoed line
+RUN echo '' > /app/src/Program.cs
+
 RUN echo "cd \${CODECRAFTERS_SUBMISSION_DIR} && dotnet build --configuration Release ." > /codecrafters-precompile.sh
 RUN chmod +x /codecrafters-precompile.sh
 
