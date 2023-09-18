@@ -16,6 +16,7 @@ short_description_md: |
 completion_percentage: 5
 
 languages:
+  - slug: "cpp"
   - slug: "csharp"
   - slug: "go"
   - slug: "javascript"
