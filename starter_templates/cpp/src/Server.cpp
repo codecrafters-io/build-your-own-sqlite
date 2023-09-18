@@ -1,3 +1,4 @@
+#include <cstring>
 #include <iostream>
 #include <fstream>
 
@@ -20,17 +21,15 @@ int main(int argc, char* argv[]) {
             return 1;
         }
 
-
         // Uncomment this to pass the first stage
         // database_file.seekg(16);  // Skip the first 16 bytes of the header
-        //
+        // 
         // char buffer[2];
         // database_file.read(buffer, 2);
-        //
-        // unsigned short page_size;
-        // memcpy(&page_size, buffer, 2);
-        //
-        // std::cout << "Database page size: " << page_size << std::endl;
+        // 
+        // unsigned short page_size = (static_cast<unsigned char>(buffer[1]) | (static_cast<unsigned char>(buffer[0]) << 8));
+        // 
+        // std::cout << "database page size: " << page_size << std::endl;
     }
 
     return 0;
