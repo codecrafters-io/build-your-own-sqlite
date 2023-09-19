@@ -191,3 +191,21 @@
   template_attributes:
     required_executable: "cmake"
     user_editable_file: "src/Server.cpp"
+
+- language: zig
+  file_mappings:
+    - source: starter_templates/README.md
+      target: README.md
+    - source: starter_templates/codecrafters.yml
+      target: codecrafters.yml
+    - source: starter_templates/.gitignore
+      target: .gitignore
+    - source: starter_templates/zig/src/main.zig
+      target: app/main.zig
+    - source: starter_templates/zig/your_sqlite3.sh
+      target: your_sqlite3.sh
+    - source: starter_templates/.gitattributes
+      target: .gitattributes
+  template_attributes:
+    required_executable: "zig (0.11)"
+    user_editable_file: "app/main.zig"
