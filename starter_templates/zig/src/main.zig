@@ -1,32 +1,33 @@
 const std = @import("std");
-const fs = std.fs;
-const io = std.io;
 
 pub fn main() !void {
-    var args = std.process.args();
+    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+    defer _ = gpa.deinit();
+    const allocator = gpa.allocator();
+
+    const args = try std.process.argsAlloc(allocator);
+    defer std.process.argsFree(allocator, args);
+
+    // You can use print statements as follows for debugging, they'll be visible when running tests.
+    try std.io.getStdOut().writer().print("Logs from your program will appear here\n", .{});
+
     if (args.len < 3) {
         try std.io.getStdErr().writer().print("Usage: {s} <database_file_path> <command>\n", .{args[0]});
-        return null;
+        return;
     }
 
-    const database_file_path = args[1];
-    const command = args[2];
+    var database_file_path: []const u8 = args[1];
+    var command: []const u8 = args[2];
 
     if (std.mem.eql(u8, command, ".dbinfo")) {
-        const file = try fs.cwd().openFile(database_file_path, .{});
+        var file = try std.fs.cwd().openFile(database_file_path, .{});
         defer file.close();
-        
-        try std.io.getStdOut().writer().print("Logs from your program will appear here\n", .{});
-        
+
         // Uncomment this to pass the first stage
-        // 
-        // try file.seekBy(16);
-        //
-        // var buffer: [2]u8 = undefined;
-        // try file.readExact(&buffer);
-        //
-        // const page_size = @intCast(u16, @bytesToSlice(u8, buffer[0..2])[0]) | @bytesToSlice(u8, buffer[0..2])[1] << 8;
-        //
+        // var buf: [2]u8 = undefined;
+        // _ = try file.seekTo(16);
+        // _ = try file.read(&buf);
+        // const page_size = std.mem.readInt(u16, &buf, .Big);
         // try std.io.getStdOut().writer().print("database page size: {}\n", .{page_size});
     }
 }

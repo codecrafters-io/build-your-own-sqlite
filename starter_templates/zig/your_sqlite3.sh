@@ -6,6 +6,5 @@
 #
 # DON'T EDIT THIS!
 set -e
-
-zig build-exe $(dirname $0)/src/main.zig > /dev/null
-exec ./main "$@"
+zig build-exe ./app/main.zig
+./main "$@"
