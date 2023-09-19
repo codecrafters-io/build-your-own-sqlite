@@ -4,9 +4,9 @@
 # unless you really need them.
 debug: false
 
-# Use this to change the Rust version used to run your code
+# Use this to change the C++ version used to run your code
 # on Codecrafters.
 #
-# Available versions: rust-1.70
-language_pack: rust-1.70
+# Available versions: cpp-20
+language_pack: cpp-20
 
