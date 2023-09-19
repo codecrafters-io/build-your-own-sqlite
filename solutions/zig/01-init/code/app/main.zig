@@ -8,6 +8,7 @@ pub fn main() !void {
     const args = try std.process.argsAlloc(allocator);
     defer std.process.argsFree(allocator, args);
 
+
     if (args.len < 3) {
         try std.io.getStdErr().writer().print("Usage: {s} <database_file_path> <command>\n", .{args[0]});
         return;
