@@ -1,9 +1,7 @@
-FROM alpine:latest
+FROM alpine:edge
 
-RUN apk add --no-cache wget xz
+# Add the testing repository
+RUN echo "@testing http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
 
-RUN wget https://ziglang.org/download/0.11.0/zig-linux-x86_64-0.11.0.tar.xz && \
-    tar -xf zig-linux-x86_64-0.11.0.tar.xz && \
-    mv zig-linux-x86_64-0.11.0 /usr/local/zig
-
-ENV PATH="/usr/local/zig:${PATH}"
+# Update the package list and install Zig
+RUN apk update && apk add zig@testing=0.11.0-r0
