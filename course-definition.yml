@@ -28,7 +28,6 @@ languages:
     release_status: "alpha"
     alpha_tester_usernames: ["Terky"]
   - slug: "zig"
-    release_status: "alpha"
 
 marketing:
   difficulty: hard
