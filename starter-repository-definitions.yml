@@ -178,6 +178,10 @@
       target: README.md
     - source: starter_templates/codecrafters.yml
       target: codecrafters.yml
+    - source: starter_templates/sample.db
+      target: sample.db
+    - source: starter_templates/download_sample_databases.sh
+      target: download_sample_databases.sh
     - source: starter_templates/cpp/.gitignore
       target: .gitignore
     - source: starter_templates/cpp/src/Server.cpp
@@ -198,6 +202,10 @@
       target: README.md
     - source: starter_templates/codecrafters.yml
       target: codecrafters.yml
+    - source: starter_templates/sample.db
+      target: sample.db
+    - source: starter_templates/download_sample_databases.sh
+      target: download_sample_databases.sh
     - source: starter_templates/.gitignore
       target: .gitignore
     - source: starter_templates/zig/src/main.zig
