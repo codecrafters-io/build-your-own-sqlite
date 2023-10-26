@@ -206,7 +206,7 @@
       target: sample.db
     - source: starter_templates/download_sample_databases.sh
       target: download_sample_databases.sh
-    - source: starter_templates/.gitignore
+    - source: starter_templates/zig/.gitignore
       target: .gitignore
     - source: starter_templates/zig/src/main.zig
       target: app/main.zig
