@@ -25,7 +25,7 @@ pub fn main() !void {
     // if (std.mem.eql(u8, command, ".dbinfo")) {
     //     var file = try std.fs.cwd().openFile(database_file_path, .{});
     //     defer file.close();
-    // 
+    //
     //     var buf: [2]u8 = undefined;
     //     _ = try file.seekTo(16);
     //     _ = try file.read(&buf);
