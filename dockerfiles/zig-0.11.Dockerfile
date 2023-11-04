@@ -1,16 +1,10 @@
-FROM alpine:latest
+FROM alpine:3.18
 
-RUN apk add --no-cache curl
+# Add the testing repository
+RUN echo "@testing http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
 
-ENV ZIG_VERSION=0.11.0
-
-RUN cd /tmp \
-  && wget https://ziglang.org/download/${ZIG_VERSION}/zig-linux-x86_64-${ZIG_VERSION}.tar.xz \
-  && tar -Jxf zig-linux-x86_64-${ZIG_VERSION}.tar.xz \
-  && mv zig-linux-x86_64-${ZIG_VERSION}/zig /usr/bin \
-  && mv zig-linux-x86_64-${ZIG_VERSION}/lib /usr/bin \
-  && rm -rf zig-linux-x86_64-${ZIG_VERSION} \
-  && rm zig-linux-x86_64-${ZIG_VERSION}.tar.xz
+# Update the package list and install Zig
+RUN apk update && apk add zig@testing=0.11.0-r1
 
 RUN echo "cd \${CODECRAFTERS_SUBMISSION_DIR} && zig build-exe ./app/main.zig" > /codecrafters-precompile.sh
 RUN chmod +x /codecrafters-precompile.sh
