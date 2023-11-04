@@ -12,7 +12,5 @@ RUN cd /tmp \
   && rm -rf zig-linux-x86_64-${ZIG_VERSION} \
   && rm zig-linux-x86_64-${ZIG_VERSION}.tar.xz
 
-RUN zig version
-
 RUN echo "cd \${CODECRAFTERS_SUBMISSION_DIR} && zig build-exe ./app/main.zig" > /codecrafters-precompile.sh
 RUN chmod +x /codecrafters-precompile.sh
