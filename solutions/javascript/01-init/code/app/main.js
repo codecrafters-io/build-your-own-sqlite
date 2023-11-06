@@ -9,7 +9,7 @@ if (command === ".dbinfo") {
   const { buffer } = await databaseFileHandler.read({
     length: 100,
     position: 0,
-    buffer: Buffer.alloc(100),
+    buffer: Buffer.alloc(100)
   });
 
   const pageSize = buffer.readUInt16BE(16); // page size is 2 bytes starting at offset 16
