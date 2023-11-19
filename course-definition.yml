@@ -28,6 +28,8 @@ languages:
     release_status: "alpha"
     alpha_tester_usernames: ["Terky"]
   - slug: "zig"
+  - slug: "java"
+    release_status: "beta"
 
 marketing:
   difficulty: hard

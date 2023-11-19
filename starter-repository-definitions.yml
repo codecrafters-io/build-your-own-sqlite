@@ -217,3 +217,27 @@
   template_attributes:
     required_executable: "zig (0.11)"
     user_editable_file: "app/main.zig"
+
+- language: java
+  file_mappings:
+    - source: starter_templates/README.md
+      target: README.md
+    - source: starter_templates/codecrafters.yml
+      target: codecrafters.yml
+    - source: starter_templates/sample.db
+      target: sample.db
+    - source: starter_templates/download_sample_databases.sh
+      target: download_sample_databases.sh
+    - source: starter_templates/java/your_sqlite3.sh
+      target: your_sqlite3.sh
+    - source: starter_templates/java/.gitignore
+      target: .gitignore
+    - source: starter_templates/java/src/main/java/Main.java
+      target: src/main/java/Main.java
+    - source: starter_templates/java/pom.xml
+      target: pom.xml
+    - source: starter_templates/.gitattributes
+      target: .gitattributes
+  template_attributes:
+    required_executable: "java (21)"
+    user_editable_file: "src/main/java/Main.java"
