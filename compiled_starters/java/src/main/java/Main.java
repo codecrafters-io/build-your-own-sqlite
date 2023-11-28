@@ -11,10 +11,13 @@ public class Main {
       return;
     }
 
-    switch (args[1]) {
+    String databaseFilePath = args[0];
+    String command = args[1];
+
+    switch (command) {
       case ".dbinfo" -> {
         try {
-          byte[] header = Files.readAllBytes(Path.of(args[0]));
+          byte[] header = Files.readAllBytes(Path.of(databaseFilePath));
           // The page size is stored at the 16th byte offset, using 2 bytes in big-endian order
           int pageSize = ByteBuffer.wrap(header).order(ByteOrder.BIG_ENDIAN).position(16).getShort();
 
@@ -27,7 +30,7 @@ public class Main {
           System.out.println("Error reading file: " + e.getMessage());
         }
       }
-      default -> System.out.println("Missing or invalid command passed: " + args[1]);
+      default -> System.out.println("Missing or invalid command passed: " + command);
     }
   }
 }
