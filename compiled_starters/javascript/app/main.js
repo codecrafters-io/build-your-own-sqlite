@@ -9,7 +9,7 @@ if (command === ".dbinfo") {
   const { buffer } = await databaseFileHandler.read({
     length: 100,
     position: 0,
-    buffer: Buffer.alloc(100)
+    buffer: Buffer.alloc(100),
   });
 
   // You can use print statements as follows for debugging, they'll be visible when running tests.
