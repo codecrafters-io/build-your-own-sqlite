@@ -18,6 +18,7 @@ public class Main {
       case ".dbinfo" -> {
         try {
           byte[] header = Files.readAllBytes(Path.of(databaseFilePath));
+
           // The page size is stored at the 16th byte offset, using 2 bytes in big-endian order
           int pageSize = ByteBuffer.wrap(header).order(ByteOrder.BIG_ENDIAN).position(16).getShort();
 
