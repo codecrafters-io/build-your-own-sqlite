@@ -3,11 +3,25 @@ name: "Build your own SQLite"
 short_name: "SQLite"
 release_status: "live"
 
+# This is shown on the course overview page. Markdown supported, recommended length ~40 words.
+#
+# Recommended format:
+#
+# > ABC is <whatever>. In this challenge, you'll build your own ABC that's capable of D, E, F and G.
+# >
+# > Along the way, we'll learn about X, Y, Z and more.
+#
+# Example:
+#
+# > Redis is an in-memory data structure store often used as a database, cache, message broken and streaming engine. In this challenge
+# > you'll build your own Redis server that is capable of serving basic commands, reading RDB files and more.
+# >
+# > Along the way, you'll learn about TCP servers, the Redis Protocol and more.
 description_md: |-
-  In this challenge, you'll build a barebones SQLite implementation that supports
-  basic SQL queries like SELECT. Along the way you'll learn about SQLite's
-  [file format](https://sqlite.org/fileformat.html), how indexed data is
-  stored in B-trees and more.
+  SQLite is a popular SQL database engine. In this challenge, you'll build your own version of SQLite
+  that is capable of reading a SQLite database file and answering basic SQL queries like SELECT and using indexes.
+
+  Along the way, you'll learn about the SQLite file format, SQL syntax and more.
 
 # Keep this under 70 characters
 short_description_md: |-
@@ -79,7 +93,7 @@ stages:
       ```
 
       We're only going to focus on one of these values: `database page size`. To find the page size, you'll need
-      to read the [database header](https://www.sqlite.org/fileformat.html#the_database_header). 
+      to read the [database header](https://www.sqlite.org/fileformat.html#the_database_header).
 
       Here's how the tester will execute your program:
 
@@ -95,7 +109,7 @@ stages:
     marketing_md: |-
       In this stage, you'll implement one of SQLite's
       [dot-commands](https://www.sqlite.org/cli.html#special_commands_to_sqlite3_dot_commands_): `.dbinfo`. This command
-      prints metadata related a SQLite database, and you'll implement one of these values: the database page size. You'll 
+      prints metadata related a SQLite database, and you'll implement one of these values: the database page size. You'll
       do this by parsing a file that uses the [SQLite database file format](https://www.sqlite.org/fileformat.html).
 
   - slug: "table_count"
@@ -118,7 +132,7 @@ stages:
       data version:        1
       ```
 
-      We implemented `database page size` in the last stage. In this stage, we'll focus on another value: `number of tables`. 
+      We implemented `database page size` in the last stage. In this stage, we'll focus on another value: `number of tables`.
       To find the number of tables, you'll need to count the number of rows in the
       [`sqlite_schema`](https://www.sqlite.org/fileformat.html#storage_of_the_sql_database_schema) table.
 
@@ -135,7 +149,7 @@ stages:
       number of tables: 2
       ```
     marketing_md: |-
-      In this stage, you'll extend support for the .dbinfo command added in the previous stage. Specifically, you'll 
+      In this stage, you'll extend support for the .dbinfo command added in the previous stage. Specifically, you'll
       implement functionality to print the number of tables. You'll do this by parsing a file that uses the
       [SQLite database file format](https://www.sqlite.org/fileformat.html).
 
@@ -349,7 +363,7 @@ stages:
       The test database contains a `companies` table with an index named `idx_companies_country` on the
       `country` column.
 
-      You can download a small version of this database to test locally, read the **Sample Databases** section in the **README** 
+      You can download a small version of this database to test locally, read the **Sample Databases** section in the **README**
       of your repository for details.
 
       Here's how the tester will execute your program:
