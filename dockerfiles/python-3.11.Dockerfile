@@ -1,6 +1,6 @@
 FROM python:3.11-alpine
 
-RUN pip install pipenv
+RUN pip install --no-cache-dir "pipenv>=2023.12.1"
 
 COPY Pipfile /app/Pipfile
 COPY Pipfile.lock /app/Pipfile.lock
