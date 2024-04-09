@@ -3,6 +3,7 @@ zig-cache/
 zig-out/
 
 # Compiled binary output
+main
 bin/
 !bin/.gitkeep
 
