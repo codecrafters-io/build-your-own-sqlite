@@ -150,8 +150,12 @@
       target: your_sqlite3.sh
     - source: starter_templates/.gitattributes
       target: .gitattributes
+    - source: starter_templates/ruby/Gemfile
+      target: Gemfile
+    - source: starter_templates/ruby/Gemfile.lock
+      target: Gemfile.lock
   template_attributes:
-    required_executable: "ruby (2.7+)"
+    required_executable: "ruby (3.3)"
     user_editable_file: "app/main.rb"
 
 - language: swift
