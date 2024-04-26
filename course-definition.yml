@@ -44,6 +44,8 @@ languages:
   - slug: "zig"
   - slug: "java"
     release_status: "beta"
+  - slug: "gleam"
+    release_status: "beta"
 
 marketing:
   difficulty: hard
