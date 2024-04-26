@@ -3,7 +3,9 @@
     "description": "Build your own SQLite challenge, from CodeCrafters",
     "type": "module",
     "scripts": {
-        "dev": "deno run --allow-all app/main.ts"
+        "dev": "bun run app/main.ts"
     },
-    "dependencies": {}
+    "dependencies": {
+        "fs-extra": "^11.2.0"
+    }
 }
