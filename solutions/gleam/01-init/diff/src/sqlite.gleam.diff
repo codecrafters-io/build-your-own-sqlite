@@ -1,70 +1,40 @@
-@@ -1,39 +1,35 @@
+@@ -1,26 +1,23 @@
+ import argv
+ import file_streams/read_stream
+ import gleam/bit_array
+ import gleam/int.{to_string}
  import gleam/io
- import gleam/string
- import gleam/int
- import gleam/list
- import gleam/result
+ import gleam/list.{each}
 
--// You can use print statements as follows for debugging, they'll be visible when running tests.
--io.println("Logs from your program will appear here!")
-+pub fn main() {
-+  let args = io.argv()
-
--// Uncomment this block to pass the first stage
--// pub fn main() {
--//   let args = io.argv()
--//   
--//   case args {
--//     [_, database_file_path, command] -> {
--//       case command {
--//         ".dbinfo" -> {
--//           io.open(database_file_path, io.Read)
--//           |> result.then(fn(file) { 
--//             io.seek(file, 16)
--//             |> result.then(fn(_) {
--//               io.read_bytes(file, 2) 
--//               |> result.then(fn(bytes) {
--//                 let page_size = bytes 
--//                   |> list.reverse
--//                   |> int.from_bytes_be
--//                 io.println(string.concat(["database page size: ", int.to_string(page_size)]))
--//                 |> result.map(fn(_) { io.close(file) })
--//               })
--//             })
--//           })
--//           |> result.unwrap(crash)
--//         }
--//         _ -> io.println(string.concat(["Invalid command: ", command]))
--//       }
--//     }
--//     _ -> io.println("Usage: gleam run database_file_path command")
--//   }
--// } 
-\ No newline at end of file
+ pub fn main() {
+-  // You can use print statements as follows for debugging, they'll be visible when running tests.
+-  io.println("Logs from your program will appear here!")
+   let args = argv.load().arguments
+-  // Uncomment this to pass the first stage
+-  // case args {
+-  //   [database_file_path, ".dbinfo", ..] -> {
+-  //     let assert Ok(rs) = read_stream.open(database_file_path)
+-  //     let assert Ok(bytes) = read_stream.read_bytes_exact(rs, 16)
+-  //     let assert Ok(int_value) = read_stream.read_int16_be(rs)
+-  //
+-  //     io.print("database page size: ")
+-  //     io.println(to_string(int_value))
+-  //   }
+-  //   _ -> {
+-  //     io.println("No match")
+-  //   }
+-  // }
 +  case args {
-+    [_, database_file_path, command] -> {
-+      case command {
-+        ".dbinfo" -> {
-+          io.open(database_file_path, io.Read)
-+          |> result.then(fn(file) { 
-+            io.seek(file, 16)
-+            |> result.then(fn(_) {
-+              io.read_bytes(file, 2) 
-+              |> result.then(fn(bytes) {
-+                let page_size = bytes 
-+                  |> list.reverse
-+                  |> int.from_bytes_be
-+                io.println(string.concat(["database page size: ", int.to_string(page_size)]))
-+                |> result.map(fn(_) { io.close(file) })
-+              })
-+            })
-+          })
-+          |> result.unwrap(crash)
-+        }
-+        _ -> io.println(string.concat(["Invalid command: ", command]))
-+      }
++    [database_file_path, ".dbinfo", ..] -> {
++      let assert Ok(rs) = read_stream.open(database_file_path)
++      let assert Ok(bytes) = read_stream.read_bytes_exact(rs, 16)
++      let assert Ok(int_value) = read_stream.read_int16_be(rs)
++
++      io.print("database page size: ")
++      io.println(to_string(int_value))
 +    }
-+    _ -> io.println("Usage: gleam run database_file_path command")
++    _ -> {
++      io.println("No match")
++    }
 +  }
-+} 
-\ No newline at end of file
+ }
