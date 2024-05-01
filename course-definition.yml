@@ -46,6 +46,8 @@ languages:
     release_status: "beta"
   - slug: "gleam"
     release_status: "beta"
+  - slug: "typescript"
+    release_status: "beta"
 
 marketing:
   difficulty: hard

@@ -24,8 +24,8 @@ language_pack: go-1.22
 language_pack: php-7.4
 {{/ language_is_php }}
 {{# language_is_javascript }}
-# Available versions: nodejs-18
-language_pack: nodejs-18
+# Available versions: nodejs-21
+language_pack: nodejs-21
 {{/ language_is_javascript }}
 {{# language_is_c }}
 # Available versions: c-9.2
@@ -79,6 +79,10 @@ language_pack: cpp-20
 # Available versions: zig-0.11
 language_pack: zig-0.11
 {{/language_is_zig}}
+{{#language_is_typescript}}
+# Available versions: bun-1.1
+language_pack: bun-1.1
+{{/language_is_typescript}}
 {{#language_is_gleam}}
 # Available versions: gleam-1.0
 language_pack: gleam-1.0

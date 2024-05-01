@@ -1,6 +1,6 @@
 ![progress-banner](https://codecrafters.io/landing/images/default_progress_banners/sqlite.png)
 
-This is a starting point for JavaScript solutions to the
+This is a starting point for TypeScript solutions to the
 ["Build Your Own SQLite" Challenge](https://codecrafters.io/challenges/sqlite).
 
 In this challenge, you'll build a barebones SQLite implementation that supports
@@ -15,7 +15,7 @@ and more.
 
 # Passing the first stage
 
-The entry point for your SQLite implementation is in `app/main.js`. Study and
+The entry point for your SQLite implementation is in `app/main.ts`. Study and
 uncomment the relevant code, and push your changes to pass the first stage:
 
 ```sh
@@ -30,9 +30,9 @@ Time to move on to the next stage!
 
 Note: This section is for stages 2 and beyond.
 
-1. Ensure you have `node (21)` installed locally
+1. Ensure you have `bun (1.1)` installed locally
 1. Run `./your_sqlite3.sh` to run your program, which is implemented in
-   `app/main.js`.
+   `app/main.ts`.
 1. Commit your changes and run `git push origin master` to submit your solution
    to CodeCrafters. Test output will be streamed to your terminal.
 
