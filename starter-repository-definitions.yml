@@ -6,7 +6,6 @@
       target: codecrafters.yml
     - source: starter_templates/sample.db
       target: sample.db
-      should_skip_template_evaluation: true
     - source: starter_templates/download_sample_databases.sh
       target: download_sample_databases.sh
     - source: starter_templates/python/app/main.py
@@ -33,7 +32,6 @@
       target: codecrafters.yml
     - source: starter_templates/sample.db
       target: sample.db
-      should_skip_template_evaluation: true
     - source: starter_templates/download_sample_databases.sh
       target: download_sample_databases.sh
     - source: starter_templates/go/app/main.go
@@ -60,7 +58,6 @@
       target: codecrafters.yml
     - source: starter_templates/sample.db
       target: sample.db
-      should_skip_template_evaluation: true
     - source: starter_templates/download_sample_databases.sh
       target: download_sample_databases.sh
     - source: starter_templates/javascript/app/main.js
@@ -89,7 +86,6 @@
       target: codecrafters.yml
     - source: starter_templates/sample.db
       target: sample.db
-      should_skip_template_evaluation: true
     - source: starter_templates/download_sample_databases.sh
       target: download_sample_databases.sh
     - source: starter_templates/rust/.gitignore
@@ -116,7 +112,6 @@
       target: codecrafters.yml
     - source: starter_templates/sample.db
       target: sample.db
-      should_skip_template_evaluation: true
     - source: starter_templates/download_sample_databases.sh
       target: download_sample_databases.sh
     - source: starter_templates/csharp/.gitignore
@@ -143,7 +138,6 @@
       target: codecrafters.yml
     - source: starter_templates/sample.db
       target: sample.db
-      should_skip_template_evaluation: true
     - source: starter_templates/download_sample_databases.sh
       target: download_sample_databases.sh
     - source: starter_templates/.gitignore
@@ -170,7 +164,6 @@
       target: codecrafters.yml
     - source: starter_templates/sample.db
       target: sample.db
-      should_skip_template_evaluation: true
     - source: starter_templates/download_sample_databases.sh
       target: download_sample_databases.sh
     - source: starter_templates/swift/.gitignore
@@ -195,7 +188,6 @@
       target: codecrafters.yml
     - source: starter_templates/sample.db
       target: sample.db
-      should_skip_template_evaluation: true
     - source: starter_templates/download_sample_databases.sh
       target: download_sample_databases.sh
     - source: starter_templates/cpp/.gitignore
@@ -220,7 +212,6 @@
       target: codecrafters.yml
     - source: starter_templates/sample.db
       target: sample.db
-      should_skip_template_evaluation: true
     - source: starter_templates/download_sample_databases.sh
       target: download_sample_databases.sh
     - source: starter_templates/zig/.gitignore
@@ -243,7 +234,6 @@
       target: codecrafters.yml
     - source: starter_templates/sample.db
       target: sample.db
-      should_skip_template_evaluation: true
     - source: starter_templates/download_sample_databases.sh
       target: download_sample_databases.sh
     - source: starter_templates/java/your_sqlite3.sh
@@ -268,7 +258,6 @@
       target: codecrafters.yml
     - source: starter_templates/sample.db
       target: sample.db
-      should_skip_template_evaluation: true
     - source: starter_templates/download_sample_databases.sh
       target: download_sample_databases.sh
     - source: starter_templates/typescript/app/main.ts
@@ -277,7 +266,6 @@
       target: package.json
     - source: starter_templates/typescript/bun.lockb
       target: bun.lockb
-      should_skip_template_evaluation: true
     - source: starter_templates/typescript/your_sqlite3.sh
       target: your_sqlite3.sh
     - source: starter_templates/.gitattributes
