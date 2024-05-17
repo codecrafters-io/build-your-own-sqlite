@@ -68,8 +68,7 @@ marketing:
         Enjoying programming all over again. It's been a while since I wrote Rust, but getting a good hang of it.
 
 stages:
-  - legacy_slug: "init"
-    slug: "dr6"
+  - slug: "dr6"
     name: "Print page size"
     difficulty: very_easy
     description_md: |-
@@ -121,8 +120,7 @@ stages:
       prints metadata related a SQLite database, and you'll implement one of these values: the database page size. You'll
       do this by parsing a file that uses the [SQLite database file format](https://www.sqlite.org/fileformat.html).
 
-  - legacy_slug: "table_count"
-    slug: "ce0"
+  - slug: "ce0"
     name: "Print number of tables"
     difficulty: hard
     description_md: |-
@@ -166,8 +164,7 @@ stages:
       implement functionality to print the number of tables. You'll do this by parsing a file that uses the
       [SQLite database file format](https://www.sqlite.org/fileformat.html).
 
-  - legacy_slug: "table_names"
-    slug: "sz4"
+  - slug: "sz4"
     name: "Print table names"
     difficulty: hard
     description_md: |-
@@ -199,8 +196,7 @@ stages:
       [`.tables`](https://www.sqlite.org/cli.html#special_commands_to_sqlite3_dot_commands_). Instead of just printing
       the count of tables like in the previous stage, you'll print out the names of tables too.
 
-  - legacy_slug: "row_counts"
-    slug: "nd9"
+  - slug: "nd9"
     name: "Count rows in a table"
     difficulty: medium
     description_md: |-
@@ -238,8 +234,7 @@ stages:
       In this stage, your sqlite3 implementation will need to execute a SQL statement of this form:
       `SELECT COUNT(*) FROM <table>`.
 
-  - legacy_slug: "read_single_column"
-    slug: "az9"
+  - slug: "az9"
     name: "Read data from a single column"
     difficulty: hard
     description_md: |-
@@ -289,8 +284,7 @@ stages:
       In this stage, your sqlite3 implementation will need to execute a SQL statement of this form:
       `SELECT <column> FROM <table>`.
 
-  - legacy_slug: "read_multiple_columns"
-    slug: "vc9"
+  - slug: "vc9"
     name: "Read data from multiple columns"
     difficulty: hard
     description_md: |-
@@ -321,8 +315,7 @@ stages:
       This stage is similar to the previous one, just that you'll read data from multiple columns instead of just one.
       In this stage, your sqlite3 implementation will need to execute a SQL statement of this form: `SELECT <column1>,<column2> FROM <table>`.
 
-  - legacy_slug: "where"
-    slug: "rf3"
+  - slug: "rf3"
     name: "Filter data with a WHERE clause"
     difficulty: hard
     description_md: |-
@@ -350,8 +343,7 @@ stages:
       In this stage, you'll filter records based on a `WHERE` clause. You'll assume that the query can't be served by
       an index, so you'll visit all records in a table and then filter out the matching ones.
 
-  - legacy_slug: "table_scan"
-    slug: "ws9"
+  - slug: "ws9"
     name: "Retrieve data using a full-table scan"
     difficulty: hard
     description_md: |-
@@ -393,8 +385,7 @@ stages:
       In this stage, you'll filter records based on a `WHERE` clause. You'll assume that the query can't be served by
       an index, so you'll visit all records in a table and then filter out the matching ones.
 
-  - legacy_slug: "index_scan"
-    slug: "nz8"
+  - slug: "nz8"
     name: "Retrieve data using an index"
     difficulty: hard
     description_md: |-
