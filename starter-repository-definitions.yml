@@ -266,6 +266,8 @@
       target: package.json
     - source: starter_templates/typescript/bun.lockb
       target: bun.lockb
+    - source: starter_templates/typescript/tsconfig.json
+      target: tsconfig.json
     - source: starter_templates/typescript/your_sqlite3.sh
       target: your_sqlite3.sh
     - source: starter_templates/.gitattributes
