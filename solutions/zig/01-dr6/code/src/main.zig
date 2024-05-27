@@ -16,7 +16,6 @@ pub fn main() !void {
     const database_file_path: []const u8 = args[1];
     const command: []const u8 = args[2];
 
-
     if (std.mem.eql(u8, command, ".dbinfo")) {
         var file = try std.fs.cwd().openFile(database_file_path, .{});
         defer file.close();
