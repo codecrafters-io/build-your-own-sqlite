@@ -216,6 +216,12 @@
       target: download_sample_databases.sh
     - source: starter_templates/zig/.gitignore
       target: .gitignore
+    - source: starter_templates/zig/build.zig
+      target: build.zig
+    - source: starter_templates/zig/build.zig.zon
+      target: build.zig.zon
+    - source: starter_templates/zig/src/main.zig
+      target: src/main.zig
     - source: starter_templates/zig/src/main.zig
       target: app/main.zig
     - source: starter_templates/zig/your_sqlite3.sh
@@ -223,7 +229,7 @@
     - source: starter_templates/.gitattributes
       target: .gitattributes
   template_attributes:
-    required_executable: "zig (0.11)"
+    required_executable: "zig (0.12)"
     user_editable_file: "app/main.zig"
 
 - language: java
