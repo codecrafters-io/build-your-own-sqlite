@@ -6,5 +6,5 @@
 #
 # DON'T EDIT THIS!
 set -e
-zig build-exe ./app/main.zig
-./main "$@"
+
+exec zig build run -- "$@"

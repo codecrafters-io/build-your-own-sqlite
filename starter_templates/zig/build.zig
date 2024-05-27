@@ -19,6 +19,10 @@ pub fn build(b: *std.Build) void {
     // such a dependency.
     const run_cmd = b.addRunArtifact(exe);
 
+    if (b.args) |args| {
+        run_cmd.addArgs(args);
+    }
+
     // This creates a build step. It will be visible in the `zig build --help` menu,
     // and can be selected like this: `zig build run`
     // This will evaluate the `run` step rather than the default, which is "install".
