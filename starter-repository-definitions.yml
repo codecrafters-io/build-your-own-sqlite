@@ -196,6 +196,10 @@
       target: src/Server.cpp
     - source: starter_templates/cpp/CMakeLists.txt
       target: CMakeLists.txt
+    - source: starter_templates/cpp/vcpkg.json
+      target: vcpkg.json
+    - source: starter_templates/cpp/vcpkg-configuration.json
+      target: vcpkg-configuration.json
     - source: starter_templates/cpp/your_sqlite3.sh
       target: your_sqlite3.sh
     - source: starter_templates/.gitattributes
