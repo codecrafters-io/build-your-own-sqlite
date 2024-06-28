@@ -1,11 +1,12 @@
+# syntax=docker/dockerfile:1.7-labs
 FROM python:3.11-alpine
 
 RUN pip install --no-cache-dir "pipenv>=2023.12.1"
 
-COPY Pipfile /app/Pipfile
-COPY Pipfile.lock /app/Pipfile.lock
 
 WORKDIR /app
+# .git & README.md are unique per-repository. We ignore them on first copy to prevent cache misses
+COPY --exclude=.git --exclude=README.md . /app
 
 ENV LANG="en_US.UTF-8"
 ENV PIPENV_VENV_IN_PROJECT=1
@@ -20,3 +21,6 @@ RUN mkdir -p /app-cached
 RUN mv /app/.venv /app-cached/.venv
 
 ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="Pipfile,Pipfile.lock"
+
+# Once the heave steps are done, we can copy all files back
+COPY . /app
