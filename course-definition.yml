@@ -96,12 +96,11 @@ stages:
 
       ### Database file
 
-      The SQLite database file begins with the database header. The database page size is stored in the header, right after the magic string.
+      The SQLite database file begins with the database header. The database page size is stored in the header, right after the magic string. It's a 2-byte, big-endian value (read left-to-right).
       ```
       // Start of file
       53 51 4c 69 74 65 20 66 6f 72 6d 61 74 20 33 00  // Magic string: "SQLite format 3" + null terminator.
-      10 00                                            /* Database page size, in bytes,
-                                                          stored in big-endian (read left-to-right).
+      10 00                                            /* Database page size, in bytes.
                                                           Here, the page size is 4096 bytes. */
       ...
       ```
