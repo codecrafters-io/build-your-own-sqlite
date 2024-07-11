@@ -1,6 +1,6 @@
 @@ -1,29 +1,25 @@
  using static System.Buffers.Binary.BinaryPrimitives;
-
+ 
  // Parse arguments
  var (path, command) = args.Length switch
  {
@@ -8,9 +8,9 @@
      1 => throw new InvalidOperationException("Missing <command>"),
      _ => (args[0], args[1])
  };
-
+ 
  var databaseFile = File.OpenRead(path);
-
+ 
  // Parse command and act accordingly
  if (command == ".dbinfo")
  {
