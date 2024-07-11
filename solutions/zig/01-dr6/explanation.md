@@ -11,15 +11,6 @@ const page_size = std.mem.readInt(u16, &buf, .big);
 try std.io.getStdOut().writer().print("database page size: {}\n", .{page_size});
 ```
 
-```zig
-// Uncomment this block to pass the first stage
-var buf: [2]u8 = undefined;
-_ = try file.seekTo(16);
-_ = try file.read(&buf);
-const page_size = std.mem.readInt(u16, &buf, .big);
-try std.io.getStdOut().writer().print("database page size: {}\n", .{page_size});
-```
-
 Push your changes to pass the first stage:
 
 ```
