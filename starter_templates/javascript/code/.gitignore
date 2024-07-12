@@ -1,2 +1,2 @@
-*.db
+# node_modules doesn't need to be committed to source control
 node_modules/

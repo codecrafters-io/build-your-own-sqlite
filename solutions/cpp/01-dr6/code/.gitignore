@@ -1,3 +1,6 @@
+# Database files used for testing
+*.db
+
 # Prerequisites
 *.d
 
