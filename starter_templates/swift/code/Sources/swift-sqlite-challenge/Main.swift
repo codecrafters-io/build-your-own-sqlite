@@ -4,15 +4,9 @@ import Foundation
 struct Main {
 
     static func main() async throws {
-        switch CommandLine.argc {
-        case 0, 1:
-            print("Missing <database path> and <command>")
+        guard CommandLine.argc == 3 else {
+            print("Usage: ./your_program.sh <database path> <command>")
             return
-        case 2:
-            print("Missing <command>")
-            return
-        default:
-            break
         }
 
         let path = CommandLine.arguments[1]
@@ -36,7 +30,7 @@ struct Main {
     }
 }
 
-// This could be put in a different file, this here only to make template simple.
+// Allows constructing UInt16, UInt32, etc. from a byte array.
 extension UnsignedInteger {
 
     init<T: Collection>(_ bytes: T) where T.Element == UInt8 {

@@ -1,6 +1,6 @@
 @@ -12,35 +12,31 @@
 
- // Usage: your_sqlite3.sh sample.db .dbinfo
+ // Usage: your_program.sh sample.db .dbinfo
  func main() {
  	databaseFilePath := os.Args[1]
  	command := os.Args[2]
