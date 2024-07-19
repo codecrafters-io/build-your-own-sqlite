@@ -8,4 +8,4 @@
 
 set -e # Exit on failure
 
-exec bundle exec ruby app/server.rb "$@"
+exec bundle exec ruby app/main.rb "$@"
