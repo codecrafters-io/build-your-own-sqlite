@@ -32,7 +32,7 @@ Time to move on to the next stage!
 Note: This section is for stages 2 and beyond.
 
 1. Ensure you have `java (21)` installed locally
-1. Run `./your_sqlite3.sh` to run your program, which is implemented in
+1. Run `./your_program.sh` to run your program, which is implemented in
    `src/main/java/Main.java`.
 1. Commit your changes and run `git push origin master` to submit your solution
    to CodeCrafters. Test output will be streamed to your terminal.

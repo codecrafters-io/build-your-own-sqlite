@@ -109,7 +109,7 @@ stages:
 
       Here's how the tester will execute your program:
       ```
-      $ ./your_sqlite3.sh sample.db .dbinfo
+      $ ./your_program.sh sample.db .dbinfo
       ```
 
       Your program must print the database page size of the database file, like this:
@@ -158,7 +158,7 @@ stages:
       Here's how the tester will execute your program:
 
       ```
-      $ ./your_sqlite3.sh sample.db .dbinfo
+      $ ./your_program.sh sample.db .dbinfo
       ```
 
       and here's the output it expects:
@@ -185,7 +185,7 @@ stages:
       Here's how the tester will execute your program:
 
       ```
-      $ ./your_sqlite3.sh sample.db .tables
+      $ ./your_program.sh sample.db .tables
       ```
 
       and here's the output it expects:
@@ -219,7 +219,7 @@ stages:
       Here's how the tester will execute your program:
 
       ```
-      $ ./your_sqlite3.sh sample.db "SELECT COUNT(*) FROM apples"
+      $ ./your_program.sh sample.db "SELECT COUNT(*) FROM apples"
       ```
 
       and here's the output it expects:
@@ -255,7 +255,7 @@ stages:
       Here's how the tester will execute your program:
 
       ```
-      $ ./your_sqlite3.sh sample.db "SELECT name FROM apples"
+      $ ./your_program.sh sample.db "SELECT name FROM apples"
       ```
 
       and here's the output it expects:
@@ -305,7 +305,7 @@ stages:
       Here's how the tester will execute your program:
 
       ```
-      $ ./your_sqlite3.sh sample.db "SELECT name, color FROM apples"
+      $ ./your_program.sh sample.db "SELECT name, color FROM apples"
       ```
 
       and here's the output it expects:
@@ -335,7 +335,7 @@ stages:
       Here's how the tester will execute your program:
 
       ```
-      $ ./your_sqlite3.sh sample.db "SELECT name, color FROM apples WHERE color = 'Yellow'"
+      $ ./your_program.sh sample.db "SELECT name, color FROM apples WHERE color = 'Yellow'"
       ```
 
       and here's the output it expects:
@@ -366,7 +366,7 @@ stages:
       Here's how the tester will execute your program:
 
       ```
-      $ ./your_sqlite3.sh superheroes.db "SELECT id, name FROM superheroes WHERE eye_color = 'Pink Eyes'"
+      $ ./your_program.sh superheroes.db "SELECT id, name FROM superheroes WHERE eye_color = 'Pink Eyes'"
       ```
 
       and here's the output it expects:
@@ -415,7 +415,7 @@ stages:
       Here's how the tester will execute your program:
 
       ```
-      $ ./your_sqlite3.sh companies.db "SELECT id, name FROM companies WHERE country = 'eritrea'"
+      $ ./your_program.sh companies.db "SELECT id, name FROM companies WHERE country = 'eritrea'"
       ```
 
       and here's the output it expects:

@@ -10,7 +10,7 @@ import (
 	// "github.com/xwb1989/sqlparser"
 )
 
-// Usage: your_sqlite3.sh sample.db .dbinfo
+// Usage: your_program.sh sample.db .dbinfo
 func main() {
 	databaseFilePath := os.Args[1]
 	command := os.Args[2]
