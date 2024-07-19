@@ -14,11 +14,11 @@ set -e # Exit early if any commands fail
 # - Edit .codecrafters/compile.sh to change how your program compiles remotely
 (
   cd "$(dirname "$0")" # Ensure compile steps are run within the repository directory
-  mvn -B package -Ddir=/tmp/codecrafters-build-redis-java
+  mvn -B package -Ddir=/tmp/codecrafters-build-sqlite-java
 )
 
 # Copied from .codecrafters/run.sh
 #
 # - Edit this to change how your program runs locally
 # - Edit .codecrafters/run.sh to change how your program runs remotely
-exec java -jar /tmp/codecrafters-build-redis-java/java_redis.jar "$@"
+exec java -jar /tmp/codecrafters-build-sqlite-java/java_sqlite.jar "$@"
