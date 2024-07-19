@@ -1,3 +1,0 @@
-attributes:
-  required_executable: swift (5.7)
-  user_editable_file: Sources/swift-sqlite-challenge/Main.swift
