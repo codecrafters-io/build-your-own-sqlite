@@ -8,4 +8,4 @@
 
 set -e # Exit on failure
 
-go build -o /tmp/codecrafters-build-sqlite-go app/*.go
+cargo build --release --target-dir=/tmp/codecrafters-redis-target --manifest-path Cargo.toml

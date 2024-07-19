@@ -8,4 +8,4 @@
 
 set -e # Exit on failure
 
-go build -o /tmp/codecrafters-build-sqlite-go app/*.go
+mvn -B package -Ddir=/tmp/codecrafters-build-redis-java

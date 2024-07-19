@@ -8,4 +8,4 @@
 
 set -e # Exit on failure
 
-go build -o /tmp/codecrafters-build-sqlite-go app/*.go
+# (This file is empty since Gleam programs don't use a compile step)

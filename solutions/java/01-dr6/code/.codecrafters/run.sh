@@ -8,4 +8,4 @@
 
 set -e # Exit on failure
 
-exec /tmp/codecrafters-build-sqlite-go "$@"
+exec java -jar /tmp/codecrafters-build-redis-java/java_redis.jar "$@"
