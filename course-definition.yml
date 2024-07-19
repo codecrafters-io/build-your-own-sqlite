@@ -32,22 +32,19 @@ completion_percentage: 5
 languages:
   - slug: "cpp"
   - slug: "csharp"
+  - slug: "gleam"
   - slug: "go"
+  - slug: "java"
   - slug: "javascript"
+  - slug: "kotlin"
   - slug: "python"
   - slug: "ruby"
-    release_status: "beta"
   - slug: "rust"
+  - slug: "typescript"
+  - slug: "zig"
   - slug: "swift"
     release_status: "alpha"
     alpha_tester_usernames: ["Terky"]
-  - slug: "zig"
-  - slug: "java"
-    release_status: "beta"
-  - slug: "gleam"
-    release_status: "beta"
-  - slug: "typescript"
-    release_status: "beta"
 
 marketing:
   difficulty: hard

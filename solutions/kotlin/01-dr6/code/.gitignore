@@ -1,0 +1,5 @@
+# Database files used for testing
+*.db
+
+target/
+.idea/
