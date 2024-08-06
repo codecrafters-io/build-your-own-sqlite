@@ -1,4 +1,4 @@
-The entry point for your SQLite implementation is in `src/sqlite.gleam`.
+The entry point for your SQLite implementation is in `src/main.gleam`.
 
 Study and uncomment the relevant code: 
 
