@@ -21,4 +21,3 @@ RUN echo "cd \${CODECRAFTERS_SUBMISSION_DIR} && dotnet build --configuration Rel
 RUN chmod +x /codecrafters-precompile.sh
 
 ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="codecrafters-sqlite.csproj,codecrafters-sqlite.sln"
-
