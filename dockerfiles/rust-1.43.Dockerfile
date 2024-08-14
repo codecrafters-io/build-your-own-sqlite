@@ -21,4 +21,3 @@ RUN rm -f /tmp/codecrafters-sqlite-target/release/.fingerprint/sqlite_starter_ru
 RUN rm -rf /app/src
 
 ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="Cargo.toml,Cargo.lock"
-
