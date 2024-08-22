@@ -8,4 +8,4 @@
 
 set -e # Exit on failure
 
-cargo build --release --target-dir=/tmp/codecrafters-sqlite-target --manifest-path Cargo.toml
+cargo build --release --target-dir=/tmp/codecrafters-build-sqlite-rust --manifest-path Cargo.toml

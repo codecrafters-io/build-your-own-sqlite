@@ -6,6 +6,4 @@
 #
 # Learn more: https://codecrafters.io/program-interface
 
-set -e # Exit on failure
-
-exec /tmp/codecrafters-sqlite-target/release/sqlite-starter-rust "$@"
+exec /tmp/codecrafters-build-sqlite-rust/release/codecrafters-sqlite "$@"
