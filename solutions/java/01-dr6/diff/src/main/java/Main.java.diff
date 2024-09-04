@@ -1,9 +1,7 @@
-@@ -1,38 +1,34 @@
+@@ -2,38 +2,34 @@
+ import java.io.FileInputStream;
  import java.io.IOException;
  import java.nio.ByteBuffer;
- import java.nio.ByteOrder;
- import java.nio.file.Files;
- import java.nio.file.Path;
 
  public class Main {
    public static void main(String[] args){
@@ -18,11 +16,13 @@
      switch (command) {
        case ".dbinfo" -> {
          try {
-           byte[] header = Files.readAllBytes(Path.of(databaseFilePath));
-
-           // The page size is stored at the 16th byte offset, using 2 bytes in big-endian order.
-           // '& 0xFFFF' is used to convert the signed short to an unsigned int.
-           int pageSize = ByteBuffer.wrap(header).order(ByteOrder.BIG_ENDIAN).position(16).getShort() & 0xFFFF;
+           FileInputStream databaseFile = new FileInputStream(new File(databaseFilePath));
+           
+           databaseFile.skip(16); // Skip the first 16 bytes of the header
+           byte[] pageSizeBytes = new byte[2]; // The following 2 bytes are the page size
+           databaseFile.read(pageSizeBytes);
+           short pageSizeSigned = ByteBuffer.wrap(pageSizeBytes).getShort();
+           int pageSize = Short.toUnsignedInt(pageSizeSigned);
 
 -          // You can use print statements as follows for debugging, they'll be visible when running tests.
 -          System.out.println("Logs from your program will appear here!");
