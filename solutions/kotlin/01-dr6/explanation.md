@@ -8,7 +8,7 @@ Study and uncomment the relevant code:
 databaseFile.skip(16) // Skip the first 16 bytes of the header
 val pageSizeBytes = ByteArray(2) // The following 2 bytes are the page size
 databaseFile.read(pageSizeBytes)
-val pageSize = java.nio.ByteBuffer.wrap(pageSizeBytes).short.toInt()
+val pageSize = ByteBuffer.wrap(pageSizeBytes).short.toUShort()
 println("database page size: $pageSize")
 ```
 
