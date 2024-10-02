@@ -1,4 +1,3 @@
-java_sqlite.jar
-target/*
+*.jar
 target/
 .idea/

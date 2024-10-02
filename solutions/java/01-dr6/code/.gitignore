@@ -1,7 +1,6 @@
 # Database files used for testing
 *.db
 
-java_sqlite.jar
-target/*
+*.jar
 target/
 .idea/
