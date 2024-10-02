@@ -1,14 +1,11 @@
 {
-  "name": "@codecrafters/build-your-own-sqlite",
+  "name": "@codecrafters/sqlite",
   "description": "Build your own SQLite challenge, from CodeCrafters",
   "type": "module",
   "scripts": {
     "dev": "bun run app/main.ts"
   },
-  "dependencies": {
-    "fs-extra": "^11.2.0"
-  },
   "devDependencies": {
-    "@types/node": "^20.12.12"
+    "@types/bun": "latest"
   }
 }
