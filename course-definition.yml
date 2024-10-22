@@ -1,7 +1,7 @@
-slug: "sqlite"
-name: "Build your own SQLite"
-short_name: "SQLite"
-release_status: "live"
+slug: 'sqlite'
+name: 'Build your own SQLite'
+short_name: 'SQLite'
+release_status: 'live'
 
 # This is shown on the course overview page. Markdown supported, recommended length ~40 words.
 #
@@ -30,43 +30,45 @@ short_description_md: |-
 completion_percentage: 5
 
 languages:
-  - slug: "cpp"
-  - slug: "csharp"
-  - slug: "gleam"
-  - slug: "go"
-  - slug: "java"
-  - slug: "javascript"
-  - slug: "kotlin"
-  - slug: "python"
-  - slug: "ruby"
-  - slug: "rust"
-  - slug: "typescript"
-  - slug: "zig"
-  - slug: "swift"
-    release_status: "alpha"
-    alpha_tester_usernames: ["Terky"]
+  - slug: 'c'
+    release_status: 'alpha'
+  - slug: 'cpp'
+  - slug: 'csharp'
+  - slug: 'gleam'
+  - slug: 'go'
+  - slug: 'java'
+  - slug: 'javascript'
+  - slug: 'kotlin'
+  - slug: 'python'
+  - slug: 'ruby'
+  - slug: 'rust'
+  - slug: 'typescript'
+  - slug: 'zig'
+  - slug: 'swift'
+    release_status: 'alpha'
+    alpha_tester_usernames: ['Terky']
 
 marketing:
   difficulty: hard
-  sample_extension_idea_title: "Transactions"
-  sample_extension_idea_description: "A SQLite implementation that can handle atomic transactions using a write-ahead log (WAL) file"
+  sample_extension_idea_title: 'Transactions'
+  sample_extension_idea_description: 'A SQLite implementation that can handle atomic transactions using a write-ahead log (WAL) file'
   testimonials:
-    - author_name: "Ananthalakshmi Sankar"
-      author_description: "Automation Team, Apple"
-      author_avatar: "https://codecrafters.io/images/external/testimonials/oxta.jpeg"
-      link: "https://github.com/anu294"
+    - author_name: 'Ananthalakshmi Sankar'
+      author_description: 'Automation Team, Apple'
+      author_avatar: 'https://codecrafters.io/images/external/testimonials/oxta.jpeg'
+      link: 'https://github.com/anu294'
       text: |-
         There are few sites I like as much that have a step by step guide. The real-time feedback is so good, it's creepy!
-    - author_name: "Pranjal Paliwal"
-      author_description: "Software Engineer, Headout"
-      author_avatar: "https://codecrafters.io/images/external/testimonials/pranjal-paliwal.jpeg"
-      link: "https://github.com/betterclever"
+    - author_name: 'Pranjal Paliwal'
+      author_description: 'Software Engineer, Headout'
+      author_avatar: 'https://codecrafters.io/images/external/testimonials/pranjal-paliwal.jpeg'
+      link: 'https://github.com/betterclever'
       text: |-
         Enjoying programming all over again. It's been a while since I wrote Rust, but getting a good hang of it.
 
 stages:
-  - slug: "dr6"
-    name: "Print page size"
+  - slug: 'dr6'
+    name: 'Print page size'
     difficulty: very_easy
     description_md: |-
       In this stage, you'll implement the `.dbinfo` [dot command](https://www.sqlite.org/cli.html#special_commands_to_sqlite3_dot_commands_), which prints metadata about a SQLite database.
@@ -128,8 +130,8 @@ stages:
       prints metadata related a SQLite database, and you'll implement one of these values: the database page size. You'll
       do this by parsing a file that uses the [SQLite database file format](https://www.sqlite.org/fileformat.html).
 
-  - slug: "ce0"
-    name: "Print number of tables"
+  - slug: 'ce0'
+    name: 'Print number of tables'
     difficulty: hard
     description_md: |-
       In this stage, you'll add "number of tables" to your `.dbinfo` command's output.
@@ -194,8 +196,8 @@ stages:
       implement functionality to print the number of tables. You'll do this by parsing a file that uses the
       [SQLite database file format](https://www.sqlite.org/fileformat.html).
 
-  - slug: "sz4"
-    name: "Print table names"
+  - slug: 'sz4'
+    name: 'Print table names'
     difficulty: hard
     description_md: |-
       In this stage, you'll implement the `.tables` [dot command](https://www.sqlite.org/cli.html#special_commands_to_sqlite3_dot_commands_), which prints the names of the user tables in a SQLite database.
@@ -312,8 +314,8 @@ stages:
       [`.tables`](https://www.sqlite.org/cli.html#special_commands_to_sqlite3_dot_commands_). Instead of just printing
       the count of tables like in the previous stage, you'll print out the names of tables too.
 
-  - slug: "nd9"
-    name: "Count rows in a table"
+  - slug: 'nd9'
+    name: 'Count rows in a table'
     difficulty: medium
     description_md: |-
       Now that you've gotten your feet wet with the [SQLite database file format](https://www.sqlite.org/fileformat.html),
@@ -350,8 +352,8 @@ stages:
       In this stage, your sqlite3 implementation will need to execute a SQL statement of this form:
       `SELECT COUNT(*) FROM <table>`.
 
-  - slug: "az9"
-    name: "Read data from a single column"
+  - slug: 'az9'
+    name: 'Read data from a single column'
     difficulty: hard
     description_md: |-
       Now that you're comfortable with jumping across database pages, let's dig a little deeper and read data from
@@ -400,8 +402,8 @@ stages:
       In this stage, your sqlite3 implementation will need to execute a SQL statement of this form:
       `SELECT <column> FROM <table>`.
 
-  - slug: "vc9"
-    name: "Read data from multiple columns"
+  - slug: 'vc9'
+    name: 'Read data from multiple columns'
     difficulty: hard
     description_md: |-
       This stage is similar to the previous one, just that the tester will query for multiple columns instead of just
@@ -431,8 +433,8 @@ stages:
       This stage is similar to the previous one, just that you'll read data from multiple columns instead of just one.
       In this stage, your sqlite3 implementation will need to execute a SQL statement of this form: `SELECT <column1>,<column2> FROM <table>`.
 
-  - slug: "rf3"
-    name: "Filter data with a WHERE clause"
+  - slug: 'rf3'
+    name: 'Filter data with a WHERE clause'
     difficulty: hard
     description_md: |-
       In this stage, you'll support filtering records using a `WHERE` clause.
@@ -459,8 +461,8 @@ stages:
       In this stage, you'll filter records based on a `WHERE` clause. You'll assume that the query can't be served by
       an index, so you'll visit all records in a table and then filter out the matching ones.
 
-  - slug: "ws9"
-    name: "Retrieve data using a full-table scan"
+  - slug: 'ws9'
+    name: 'Retrieve data using a full-table scan'
     difficulty: hard
     description_md: |-
       Time to play with larger amounts of data!
@@ -501,8 +503,8 @@ stages:
       In this stage, you'll filter records based on a `WHERE` clause. You'll assume that the query can't be served by
       an index, so you'll visit all records in a table and then filter out the matching ones.
 
-  - slug: "nz8"
-    name: "Retrieve data using an index"
+  - slug: 'nz8'
+    name: 'Retrieve data using an index'
     difficulty: hard
     description_md: |-
       In this stage, we'll implement an index scan. Rather than reading _all_ rows in a table and then filtering
