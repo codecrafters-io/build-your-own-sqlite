@@ -14,7 +14,7 @@ var databaseFile = File.OpenRead(path);
 if (command == ".dbinfo")
 {
     // You can use print statements as follows for debugging, they'll be visible when running tests.
-    Console.WriteLine("Logs from your program will appear here!");
+    Console.Error.WriteLine("Logs from your program will appear here!");
 
     // Uncomment this line to pass the first stage
     // databaseFile.Seek(16, SeekOrigin.Begin); // Skip the first 16 bytes

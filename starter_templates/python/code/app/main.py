@@ -10,7 +10,7 @@ command = sys.argv[2]
 if command == ".dbinfo":
     with open(database_file_path, "rb") as database_file:
         # You can use print statements as follows for debugging, they'll be visible when running tests.
-        print("Logs from your program will appear here!")
+        print("Logs from your program will appear here!", file=sys.stderr)
 
         # Uncomment this to pass the first stage
         # database_file.seek(16)  # Skip the first 16 bytes of the header

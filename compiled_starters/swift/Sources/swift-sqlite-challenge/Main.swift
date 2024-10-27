@@ -19,7 +19,7 @@ struct Main {
         switch command {
         case ".dbinfo":
             // You can use print statements as follows for debugging, they'll be visible when running tests.
-            print("Logs from your program will appear here!")
+            eprintln("Logs from your program will appear here!")
 
             // Uncomment this block to pass the first stage
             // let pageSize = UInt16(database[16..<18])

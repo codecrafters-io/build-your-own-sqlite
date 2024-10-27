@@ -22,7 +22,7 @@
          defer file.close();
 
 -        // You can use print statements as follows for debugging, they'll be visible when running tests.
--        try std.io.getStdOut().writer().print("Logs from your program will appear here\n", .{});
+-        std.debug.print("Logs from your program will appear here!\n", .{});
 -
 -        // Uncomment this block to pass the first stage
 -        // var buf: [2]u8 = undefined;
