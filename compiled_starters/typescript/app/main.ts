@@ -11,7 +11,7 @@ if (command === ".dbinfo") {
     await databaseFileHandler.read(buffer, 0, buffer.length, 0);
 
     // You can use print statements as follows for debugging, they'll be visible when running tests.
-    console.log("Logs from your program will appear here!");
+    console.error("Logs from your program will appear here!");
 
     // Uncomment this to pass the first stage    
     // const pageSize = new DataView(buffer.buffer, 0, buffer.byteLength).getUint16(16);
