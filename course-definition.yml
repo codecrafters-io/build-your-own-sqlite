@@ -31,7 +31,6 @@ completion_percentage: 5
 
 languages:
   - slug: "c"
-    release_status: "alpha"
   - slug: "cpp"
   - slug: "csharp"
   - slug: "gleam"
