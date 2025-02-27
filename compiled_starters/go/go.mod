@@ -6,8 +6,8 @@
 //
 // DON'T EDIT THIS!
 
-module github/com/codecrafters-io/sqlite-starter-go
+module github.com/codecrafters-io/sqlite-starter-go
 
-go 1.22
+go 1.24.0
 
 require github.com/xwb1989/sqlparser v0.0.0-20180606152119-120387863bf2
