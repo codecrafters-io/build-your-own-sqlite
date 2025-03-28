@@ -14,7 +14,6 @@
    val command = args(1);
    command match {
      case ".dbinfo" => {
- case ".dbinfo" => {
 -  val databaseFile = new FileInputStream(new File(databaseFilePath))
 -  databaseFile.skip(16)
 -  val pageSizeBytes = new Array[Byte](2)
