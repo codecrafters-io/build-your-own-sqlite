@@ -1,11 +1,9 @@
---- starter_templates/scala/code/src/main/scala/Main.scala	2025-03-27 19:30:51.374671531 -0400
-+++ solutions/scala/01-dr6/code/src/main/scala/Main.scala	2025-03-27 19:22:20.930550947 -0400
-@@ -1,31 +1,26 @@
+@@ -1,31 +1,27 @@
  import java.io.File
  import java.io.FileInputStream
  import java.io.IOException
  import java.nio.ByteBuffer
- 
+
  object Main extends App {
    if args.length < 2
    then {
@@ -22,7 +20,7 @@
        databaseFile.read(pageSizeBytes)
        val pageSizeSigned = ByteBuffer.wrap(pageSizeBytes).getShort()
        val pageSize = pageSizeSigned & 0xFFFF
--
+
 -      // You can use print statements as follows for debugging, they'll be visible when running tests.
 -      System.err.println("Logs from your program will appear here!")
 -

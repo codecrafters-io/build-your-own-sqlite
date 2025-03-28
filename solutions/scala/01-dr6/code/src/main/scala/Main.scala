@@ -19,6 +19,7 @@ object Main extends App {
       databaseFile.read(pageSizeBytes)
       val pageSizeSigned = ByteBuffer.wrap(pageSizeBytes).getShort()
       val pageSize = pageSizeSigned & 0xFFFF
+
       println("database page size: " + pageSize)
     }
     case _ => println("Missing or invalid command passed: " + command)
