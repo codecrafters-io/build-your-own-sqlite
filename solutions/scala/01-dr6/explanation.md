@@ -4,7 +4,7 @@ Study and uncomment the relevant code:
 
 ```scala
 // Uncomment this block to pass the first stage
-println("database page size: " + pageSize);
+println("database page size: " + pageSize)
 ```
 
 Push your changes to pass the first stage:
