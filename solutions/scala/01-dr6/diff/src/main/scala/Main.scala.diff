@@ -14,12 +14,28 @@
    val command = args(1);
    command match {
      case ".dbinfo" => {
-       val databaseFile = new FileInputStream(new File(databaseFilePath))
-       databaseFile.skip(16)
-       val pageSizeBytes = new Array[Byte](2)
-       databaseFile.read(pageSizeBytes)
-       val pageSizeSigned = ByteBuffer.wrap(pageSizeBytes).getShort()
-       val pageSize = pageSizeSigned & 0xFFFF
+ case ".dbinfo" => {
+-  val databaseFile = new FileInputStream(new File(databaseFilePath))
+-  databaseFile.skip(16)
+-  val pageSizeBytes = new Array[Byte](2)
+-  databaseFile.read(pageSizeBytes)
+-  val pageSizeSigned = ByteBuffer.wrap(pageSizeBytes).getShort()
+-  val pageSize = pageSizeSigned & 0xFFFF
++  var databaseFile: FileInputStream = null
++  try {
++    databaseFile = new FileInputStream(new File(databaseFilePath))
++    databaseFile.skip(16)
++    val pageSizeBytes = new Array[Byte](2)
++    databaseFile.read(pageSizeBytes)
++    val pageSizeSigned = ByteBuffer.wrap(pageSizeBytes).getShort()
++    val pageSize = pageSizeSigned & 0xFFFF
++    println("database page size: " + pageSize)
++  } finally {
++    if (databaseFile != null) {
++      databaseFile.close()
++    }
++  }
+ }
 
 -      // You can use print statements as follows for debugging, they'll be visible when running tests.
 -      System.err.println("Logs from your program will appear here!")
