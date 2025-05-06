@@ -15,7 +15,7 @@ defmodule CLI do
             # IO.puts("database page size: #{page_size}")
         end
       _ ->
-        IO.puts(:stderr, "Usage: your_program <database_file> <command>")
+        IO.puts("Usage: your_program <database_file> <command>")
     end
   end
 end
