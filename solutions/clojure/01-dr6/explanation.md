@@ -4,7 +4,13 @@ Study and uncomment the relevant code:
 
 ```clojure
 ;; Uncomment this block to pass the first stage
-(println "TODO: Implement starter code")
+(let [command (second args)]
+  (case command
+    ".dbinfo"
+    (let [db-file-path (first args)
+          contents (lazy-byte-seq db-file-path)
+          page-size (bytes-to-int (take 2 (drop 16 contents)))]
+      (println (str "database page size: " page-size)))))
 ```
 
 Push your changes to pass the first stage:

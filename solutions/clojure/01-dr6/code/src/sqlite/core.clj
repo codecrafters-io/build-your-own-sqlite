@@ -1,8 +1,26 @@
 (ns sqlite.core
-  (:gen-class))
+  (:gen-class)
+  (:require
+   [clojure.java.io :as io]))
+
+(defn lazy-byte-seq [filepath]
+  (let [is (io/input-stream filepath)
+        step (fn step [input-stream]
+               (lazy-seq
+                (let [byte-val (.read input-stream)]
+                  (when (not= byte-val -1)
+                    (cons byte-val (step input-stream))))))]
+    (step is)))
+
+(defn bytes-to-int [bytes]
+  (reduce (fn [acc b] (+ (* acc 256) b)) 0 bytes))
 
 (defn -main [& args]
-    (println "Logs from your program will appear here!"))
-
-  (println "TODO: Implement starter code")
+  (let [command (second args)]
+    (case command
+      ".dbinfo"
+      (let [db-file-path (first args)
+            contents (lazy-byte-seq db-file-path)
+            page-size (bytes-to-int (take 2 (drop 16 contents)))]
+        (println (str "database page size: " page-size)))))
   )
