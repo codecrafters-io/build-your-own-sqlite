@@ -8,4 +8,4 @@
 
 set -e # Exit on failure
 
-bb -m sqlite.core "$@"
+exec java -jar /tmp/codecrafters-build-sqlite-clojure/target.jar "$@"
