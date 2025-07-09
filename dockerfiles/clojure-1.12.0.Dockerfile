@@ -10,4 +10,4 @@ WORKDIR /app
 COPY --exclude=.git --exclude=README.md . /app
 
 # Install language-specific dependencies
-RUN .codecrafters/install.sh
+RUN .codecrafters/compile.sh
