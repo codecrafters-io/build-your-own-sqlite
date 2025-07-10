@@ -31,6 +31,7 @@ completion_percentage: 5
 
 languages:
   - slug: "c"
+  - slug: "clojure"
   - slug: "cpp"
   - slug: "csharp"
   - slug: "elixir"
