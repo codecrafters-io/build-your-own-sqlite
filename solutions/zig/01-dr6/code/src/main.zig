@@ -8,8 +8,13 @@ pub fn main() !void {
     const args = try std.process.argsAlloc(allocator);
     defer std.process.argsFree(allocator, args);
 
+    var stdout_buffer: [1024]u8 = undefined;
+    var stdout_writer = std.fs.File.stdout().writer(&stdout_buffer);
+    const stdout = &stdout_writer.interface;
+
     if (args.len < 3) {
-        try std.io.getStdErr().writer().print("Usage: {s} <database_file_path> <command>\n", .{args[0]});
+        try stdout.print("Usage: {s} <database_file_path> <command>\n", .{args[0]});
+        try stdout.flush();
         return;
     }
 
@@ -24,6 +29,7 @@ pub fn main() !void {
         _ = try file.seekTo(16);
         _ = try file.read(&buf);
         const page_size = std.mem.readInt(u16, &buf, .big);
-        try std.io.getStdOut().writer().print("database page size: {}\n", .{page_size});
+        try stdout.print("database page size: {}\n", .{page_size});
+        try stdout.flush();
     }
 }
