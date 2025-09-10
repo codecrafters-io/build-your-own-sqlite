@@ -1,4 +1,7 @@
 const std = @import("std");
+var stdout_buffer: [1024]u8 = undefined;
+var stdout_writer = std.fs.File.stdout().writer(&stdout_buffer);
+const stdout = &stdout_writer.interface;
 
 pub fn main() !void {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
@@ -8,14 +11,8 @@ pub fn main() !void {
     const args = try std.process.argsAlloc(allocator);
     defer std.process.argsFree(allocator, args);
 
-    var stdout_buffer: [1024]u8 = undefined;
-    var stdout_writer = std.fs.File.stdout().writer(&stdout_buffer);
-    const stdout = &stdout_writer.interface;
-
     if (args.len < 3) {
-        try stdout.print("Usage: {s} <database_file_path> <command>\n", .{args[0]});
-        try stdout.flush();
-        return;
+        std.debug.print("Usage: {s} <database_file_path> <command>\n", .{args[0]});
     }
 
     const database_file_path: []const u8 = args[1];
