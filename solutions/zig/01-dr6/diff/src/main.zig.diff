@@ -1,4 +1,4 @@
-@@ -1,36 +1,32 @@
+@@ -1,37 +1,33 @@
  const std = @import("std");
  var stdout_buffer: [1024]u8 = undefined;
  var stdout_writer = std.fs.File.stdout().writer(&stdout_buffer);
@@ -14,6 +14,7 @@
 
      if (args.len < 3) {
          std.debug.print("Usage: {s} <database_file_path> <command>\n", .{args[0]});
+         std.process.exit(1);
      }
 
      const database_file_path: []const u8 = args[1];

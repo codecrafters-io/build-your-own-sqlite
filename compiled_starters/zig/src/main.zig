@@ -13,6 +13,7 @@ pub fn main() !void {
 
     if (args.len < 3) {
         std.debug.print("Usage: {s} <database_file_path> <command>\n", .{args[0]});
+        std.process.exit(1);
     }
 
     const database_file_path: []const u8 = args[1];
