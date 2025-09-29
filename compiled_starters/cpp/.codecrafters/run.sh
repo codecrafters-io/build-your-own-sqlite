@@ -8,4 +8,4 @@
 
 set -e # Exit on failure
 
-exec ./build/exe "$@"
+exec $(dirname "$0")/build/sqlite "$@"
