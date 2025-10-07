@@ -1,13 +1,17 @@
-In this stage, you'll implement the `.dbinfo` [dot command](https://www.sqlite.org/cli.html#special_commands_to_sqlite3_dot_commands_), which prints metadata about a SQLite database.
+In this stage, you'll implement printing the page size of a SQLite database file via the `.dbinfo` [dot command](https://www.sqlite.org/cli.html#special_commands_to_sqlite3_dot_commands_).
 
 ### `.dbinfo`
 
+`.dbinfo` is a [dot command](https://www.sqlite.org/cli.html#special_commands_to_sqlite3_dot_commands_) that prints metadata about a SQLite database.
+
 The `.dbinfo` command is executed like this:
+
 ```
 $ sqlite3 sample.db .dbinfo
 ```
 
 It outputs metadata about the database file:
+
 ```yaml
 database page size:  4096
 write format:        1
@@ -23,6 +27,7 @@ In this stage, your `.dbinfo` command only needs to output the "database page si
 ### Database file
 
 The SQLite database file begins with the database header. The database page size is stored in the header, right after the magic string. It's a 2-byte, big-endian value (read left-to-right).
+
 ```
 // Start of file
 53 51 4c 69 74 65 20 66 6f 72 6d 61 74 20 33 00  // Magic string: "SQLite format 3" + null terminator.
@@ -34,11 +39,13 @@ The SQLite database file begins with the database header. The database page size
 ### Tests
 
 Here's how the tester will execute your program:
+
 ```
 $ ./your_program.sh sample.db .dbinfo
 ```
 
 Your program must print the database page size of the database file, like this:
+
 ```
 database page size: 4096
 ```
