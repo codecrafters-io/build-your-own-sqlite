@@ -13,7 +13,7 @@ if (command === ".dbinfo") {
     // You can use print statements as follows for debugging, they'll be visible when running tests.
     console.error("Logs from your program will appear here!");
 
-    // Uncomment this to pass the first stage    
+    // Uncomment the code below to pass the first stage the first stage    
     // const pageSize = new DataView(buffer.buffer, 0, buffer.byteLength).getUint16(16);
     // console.log(`database page size: ${pageSize}`);
 
