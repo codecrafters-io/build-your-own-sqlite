@@ -15,7 +15,7 @@ if (command === ".dbinfo") {
   // You can use print statements as follows for debugging, they'll be visible when running tests.
   console.error("Logs from your program will appear here!");
 
-  // Uncomment this to pass the first stage
+  // TODO: Uncomment the code below to pass the first stage
   // const pageSize = buffer.readUInt16BE(16); // page size is 2 bytes starting at offset 16
   // console.log(`database page size: ${pageSize}`);
 } else {
