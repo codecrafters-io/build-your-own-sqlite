@@ -12,7 +12,7 @@ if command == ".dbinfo":
         # You can use print statements as follows for debugging, they'll be visible when running tests.
         print("Logs from your program will appear here!", file=sys.stderr)
 
-        # Uncomment this to pass the first stage
+        # Uncomment the code below to pass the first stage the first stage
         # database_file.seek(16)  # Skip the first 16 bytes of the header
         # page_size = int.from_bytes(database_file.read(2), byteorder="big")
         # print(f"database page size: {page_size}")
