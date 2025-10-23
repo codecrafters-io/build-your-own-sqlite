@@ -25,7 +25,7 @@ int main(int argc, char* argv[]) {
             return 1;
         }
 
-        // Uncomment the code below to pass the first stage the first stage
+        // Uncomment this to pass the first stage
         // database_file.seekg(16);  // Skip the first 16 bytes of the header
         // 
         // char buffer[2];

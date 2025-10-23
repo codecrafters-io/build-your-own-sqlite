@@ -27,7 +27,7 @@
 -        // You can use print statements as follows for debugging, they'll be visible when running tests.
 -        std.debug.print("Logs from your program will appear here!\n", .{});
 -
--        // Uncomment the code below to pass the first stage the first stage
+-        // Uncomment this block to pass the first stage
 -        // var buf: [2]u8 = undefined;
 -        // _ = try file.seekTo(16);
 -        // _ = try file.read(&buf);

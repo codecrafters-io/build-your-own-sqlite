@@ -9,7 +9,7 @@ pub fn main() {
 
   let args = argv.load().arguments
 
-  // Uncomment the code below to pass the first stage the first stage
+  // Uncomment this to pass the first stage
   // case args {
   //   [database_file_path, ".dbinfo", ..] -> {
   //     let assert Ok(rs) = read_stream.open(database_file_path)

@@ -16,7 +16,7 @@ if (command == ".dbinfo")
     // You can use print statements as follows for debugging, they'll be visible when running tests.
     Console.Error.WriteLine("Logs from your program will appear here!");
 
-    // Uncomment the code below to pass the first stage the first stage
+    // Uncomment this line to pass the first stage
     // databaseFile.Seek(16, SeekOrigin.Begin); // Skip the first 16 bytes
     // byte[] pageSizeBytes = new byte[2];
     // databaseFile.Read(pageSizeBytes, 0, 2);
