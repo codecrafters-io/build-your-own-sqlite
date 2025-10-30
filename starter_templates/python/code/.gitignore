@@ -1,6 +1,3 @@
-# Database files used for testing
-*.db
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
