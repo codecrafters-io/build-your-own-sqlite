@@ -1,0 +1,7 @@
+[project]
+name = "codecrafters-sqlite"
+version = "0.1.0"
+requires-python = ">=3.14"
+dependencies = [
+    "sqlparse>=0.5.3",
+]
