@@ -1,0 +1,10 @@
+# Database files used for testing
+*.db
+
+**/target
+/.bloop/
+/.bsp/
+/.metals/
+/project/.bloop/
+metals.sbt
+metals/project/
