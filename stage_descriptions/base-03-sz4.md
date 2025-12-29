@@ -11,7 +11,7 @@ To figure out where the cells are located, read the `sqlite_schema` page's cell 
 - The array appears directly after the page header.
 - The elements (offsets) are 2-byte big-endian values.
 - The offsets are relative to the start of the page.
-- The array size is equal to the number of cells on the page. (The page header specifies the number of cells on the page.)
+- The array size is equal to the number of cells on the page (The page header specifies the number of cells on the page).
 
 ### Cell
 
