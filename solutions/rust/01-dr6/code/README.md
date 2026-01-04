@@ -29,7 +29,7 @@ Time to move on to the next stage!
 
 Note: This section is for stages 2 and beyond.
 
-1. Ensure you have `cargo (1.91)` installed locally
+1. Ensure you have `cargo (1.92)` installed locally
 1. Run `./your_program.sh` to run your program, which is implemented in
    `src/main.rs`. This command compiles your Rust project, so it might be slow
    the first time you run it. Subsequent runs will be fast.
