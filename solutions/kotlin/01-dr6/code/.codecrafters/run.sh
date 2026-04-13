@@ -8,4 +8,8 @@
 
 set -e # Exit on failure
 
-exec /tmp/codecrafters-build-sqlite-kotlin/distributions/app/bin/app "$@"
+LIBS_DIR="/tmp/codecrafters-libs-sqlite-kotlin"
+BUILD_DIR="/tmp/codecrafters-build-sqlite-kotlin"
+KOTLIN_MAIN="$BUILD_DIR/classes/kotlin/main"
+
+exec java -cp "$KOTLIN_MAIN:$LIBS_DIR/*" AppKt "$@"
