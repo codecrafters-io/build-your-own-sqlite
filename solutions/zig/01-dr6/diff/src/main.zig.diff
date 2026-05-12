@@ -1,19 +1,14 @@
-@@ -1,37 +1,33 @@
+@@ -1,34 +1,29 @@
  const std = @import("std");
- var stdout_buffer: [1024]u8 = undefined;
- var stdout_writer = std.fs.File.stdout().writer(&stdout_buffer);
- const stdout = &stdout_writer.interface;
 
- pub fn main() !void {
-     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-     defer _ = gpa.deinit();
-     const allocator = gpa.allocator();
+ pub fn main(init: std.process.Init) !void {
+     const io = init.io;
+     var stderr = std.Io.File.stderr().writer(io, &.{});
 
-     const args = try std.process.argsAlloc(allocator);
-     defer std.process.argsFree(allocator, args);
+     const args = try std.process.Args.toSlice(init.minimal.args, init.arena.allocator());
 
      if (args.len < 3) {
-         std.debug.print("Usage: {s} <database_file_path> <command>\n", .{args[0]});
+         try stderr.interface.print("Usage: {s} <database_file_path> <command>\n", .{args[0]});
          std.process.exit(1);
      }
 
@@ -21,24 +16,26 @@
      const command: []const u8 = args[2];
 
      if (std.mem.eql(u8, command, ".dbinfo")) {
-         var file = try std.fs.cwd().openFile(database_file_path, .{});
-         defer file.close();
+         var file = try std.Io.Dir.cwd().openFile(io, database_file_path, .{});
+         defer file.close(io);
 
 -        // You can use print statements as follows for debugging, they'll be visible when running tests.
--        std.debug.print("Logs from your program will appear here!\n", .{});
--
+-        try stderr.interface.print("Logs from your program will appear here!\n", .{});
++        var reader_buf: [4096]u8 = undefined;
++        var reader = file.reader(io, &reader_buf);
++        try reader.seekTo(16);
++        const page_size = std.mem.readInt(u16, try reader.interface.takeArray(2), .big);
+
 -        // TODO: Uncomment the code below to pass the first stage
--        // var buf: [2]u8 = undefined;
--        // _ = try file.seekTo(16);
--        // _ = try file.read(&buf);
--        // const page_size = std.mem.readInt(u16, &buf, .big);
--        // try stdout.print("database page size: {}\n", .{page_size});
--        // try stdout.flush();
-+        var buf: [2]u8 = undefined;
-+        _ = try file.seekTo(16);
-+        _ = try file.read(&buf);
-+        const page_size = std.mem.readInt(u16, &buf, .big);
-+        try stdout.print("database page size: {}\n", .{page_size});
-+        try stdout.flush();
+-        //
+-        // var reader_buf: [4096]u8 = undefined;
+-        // var reader = file.reader(io, &reader_buf);
+-        // try reader.seekTo(16);
+-        // const page_size = std.mem.readInt(u16, try reader.interface.takeArray(2), .big);
+-        //
+-        // var stdout = std.Io.File.stdout().writer(io, &.{});
+-        // try stdout.interface.print("database page size: {}\n", .{page_size});
++        var stdout = std.Io.File.stdout().writer(io, &.{});
++        try stdout.interface.print("database page size: {}\n", .{page_size});
      }
  }
