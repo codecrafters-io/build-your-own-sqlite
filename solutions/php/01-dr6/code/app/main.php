@@ -1,0 +1,26 @@
+<?php
+error_reporting(E_ALL);
+
+if ($argc < 3) {
+    fwrite(STDERR, "Usage: {$argv[0]} <database_file_path> <command>\n");
+    exit(1);
+}
+
+$database_file_path = $argv[1];
+$command = $argv[2];
+
+if ($command === '.dbinfo') {
+    $database_file = fopen($database_file_path, 'rb');
+    if ($database_file === false) {
+        fwrite(STDERR, "Failed to open database file\n");
+        exit(1);
+    }
+
+    fseek($database_file, 16); // Skip the first 16 bytes of the header
+    $page_size = unpack('n', fread($database_file, 2))[1];
+    fwrite(STDOUT, "database page size: {$page_size}\n");
+
+    fclose($database_file);
+} else {
+    fwrite(STDOUT, "Invalid command: {$command}\n");
+}
