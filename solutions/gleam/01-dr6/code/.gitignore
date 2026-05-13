@@ -5,3 +5,4 @@
 *.ez
 /build
 erl_crash.dump
+main
