@@ -1,4 +1,4 @@
-name = "codecrafters_sqlite"
+name = "main"
 version = "1.0.0"
 
 # For a full reference of all the available options, you can have a look at
@@ -6,6 +6,7 @@ version = "1.0.0"
 
 [dependencies]
 gleam_stdlib = "~> 0.34 or ~> 1.0"
+gleescript = ">= 1.0.0 and < 2.0.0"
 argv = ">= 1.0.2 and < 2.0.0"
 file_streams = ">= 0.4.2 and < 1.0.0"
 
