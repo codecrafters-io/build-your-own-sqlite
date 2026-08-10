@@ -1,0 +1,473 @@
+open System
+open System.IO
+open System.Buffers.Binary
+open System.Text
+open System.Text.RegularExpressions
+
+// A value stored in a column of a record
+type Value =
+    | Null
+    | Integer of int64
+    | Real of float
+    | Text of string
+    | Blob of byte[]
+
+// Read a big-endian unsigned 16-bit integer at the given offset
+let readUInt16 (bytes: byte[]) (offset: int) =
+    BinaryPrimitives.ReadUInt16BigEndian(ReadOnlySpan(bytes, offset, 2))
+
+// Read a big-endian unsigned 32-bit integer at the given offset
+let readUInt32 (bytes: byte[]) (offset: int) =
+    BinaryPrimitives.ReadUInt32BigEndian(ReadOnlySpan(bytes, offset, 4))
+
+// Read a SQLite varint starting at the given offset.
+// A varint is 1-9 bytes long: the lower 7 bits of each byte are used, and the
+// high bit signals that another byte follows. The 9th byte (if present)
+// contributes all 8 bits. Returns the value and the number of bytes consumed.
+let readVarint (bytes: byte[]) (offset: int) =
+    let rec go acc i =
+        let b = bytes[offset + i]
+        if i = 8 then (acc <<< 8) ||| int64 b, 9
+        elif b < 0x80uy then (acc <<< 7) ||| int64 b, i + 1
+        else go ((acc <<< 7) ||| int64 (b &&& 0x7Fuy)) (i + 1)
+
+    go 0L 0
+
+// The size in bytes of a value with the given serial type code
+let serialTypeSize (serialType: int64) =
+    match serialType with
+    | 0L | 8L | 9L -> 0
+    | 1L -> 1
+    | 2L -> 2
+    | 3L -> 3
+    | 4L -> 4
+    | 5L -> 6
+    | 6L | 7L -> 8
+    | n when n >= 12L && n % 2L = 0L -> int (n - 12L) / 2 // BLOB
+    | n when n >= 13L -> int (n - 13L) / 2 // TEXT
+    | n -> failwith $"Invalid serial type: {n}"
+
+// Read a big-endian signed integer of the given size at the given offset
+let readBigEndianInt (bytes: byte[]) (offset: int) (size: int) =
+    let mutable value = if bytes[offset] >= 0x80uy then -1L else 0L // Sign-extend
+
+    for i in 0 .. size - 1 do
+        value <- (value <<< 8) ||| int64 bytes[offset + i]
+
+    value
+
+// Read a value with the given serial type code at the given offset
+let readSerialValue (bytes: byte[]) (offset: int) (serialType: int64) =
+    match serialType with
+    | 0L -> Null
+    | 1L | 2L | 3L | 4L | 5L | 6L -> Integer(readBigEndianInt bytes offset (serialTypeSize serialType))
+    | 7L -> Real(BitConverter.Int64BitsToDouble(readBigEndianInt bytes offset 8))
+    | 8L -> Integer 0L
+    | 9L -> Integer 1L
+    | n when n % 2L = 0L -> Blob(bytes[offset .. offset + serialTypeSize n - 1])
+    | n -> Text(Encoding.UTF8.GetString(bytes, offset, serialTypeSize n))
+
+// Read a record (one row) in SQLite's record format at the given offset.
+// The record header lists a serial type for each column, and the body contains
+// the values in the same order.
+let readRecord (bytes: byte[]) (offset: int) =
+    let headerSize, headerSizeLength = readVarint bytes offset
+
+    // Read serial types until the header is exhausted
+    let serialTypes =
+        let mutable pos = offset + headerSizeLength
+
+        [| while pos < offset + int headerSize do
+               let serialType, length = readVarint bytes pos
+               pos <- pos + length
+               yield serialType |]
+
+    // Read the values, each one starting where the previous one ended
+    let mutable pos = offset + int headerSize
+
+    [| for serialType in serialTypes do
+           yield readSerialValue bytes pos serialType
+           pos <- pos + serialTypeSize serialType |]
+
+let textValue (value: Value) =
+    match value with
+    | Text text -> text
+    | value -> failwith $"Expected a text value, got: {value}"
+
+let integerValue (value: Value) =
+    match value with
+    | Integer integer -> integer
+    | value -> failwith $"Expected an integer value, got: {value}"
+
+// A b-tree page, with the raw page data and the parsed page header
+type Page =
+    { Data: byte[]
+      PageType: byte
+      HeaderOffset: int
+      CellPointers: int[] }
+
+// Read the page with the given number (page numbers start at 1)
+let readPage (databaseFile: FileStream) (pageSize: int) (pageNumber: int) =
+    let data = Array.zeroCreate<byte> pageSize
+    databaseFile.Seek(int64 (pageNumber - 1) * int64 pageSize, SeekOrigin.Begin) |> ignore
+    databaseFile.ReadExactly(data, 0, pageSize)
+
+    // Page 1 contains the 100-byte file header, the page header comes after it
+    let headerOffset = if pageNumber = 1 then 100 else 0
+    let pageType = data[headerOffset]
+    let cellCount = int (readUInt16 data (headerOffset + 3))
+
+    // Interior pages have a 12-byte header, leaf pages an 8-byte one. The cell
+    // pointer array follows the header: 2 bytes per cell, relative to the
+    // start of the page.
+    let pageHeaderSize = if pageType = 0x02uy || pageType = 0x05uy then 12 else 8
+
+    let cellPointers =
+        [| for i in 0 .. cellCount - 1 -> int (readUInt16 data (headerOffset + pageHeaderSize + i * 2)) |]
+
+    { Data = data
+      PageType = pageType
+      HeaderOffset = headerOffset
+      CellPointers = cellPointers }
+
+// Read the record stored in a table b-tree leaf cell at the given offset.
+// A leaf table cell is: payload size (varint), rowid (varint), record.
+let readLeafTableCell (page: Page) (cellPointer: int) =
+    let _payloadSize, payloadSizeLength = readVarint page.Data cellPointer
+    let rowid, rowidLength = readVarint page.Data (cellPointer + payloadSizeLength)
+    rowid, readRecord page.Data (cellPointer + payloadSizeLength + rowidLength)
+
+// Walk a table b-tree depth-first, yielding (rowid, record) for every row.
+// Interior pages don't store rows themselves: each cell is a 4-byte big-endian
+// child page number followed by a rowid (varint), and the page header stores a
+// right-most child pointer at offset 8.
+let rec walkTableBtree (databaseFile: FileStream) (pageSize: int) (pageNumber: int) =
+    seq {
+        let page = readPage databaseFile pageSize pageNumber
+
+        match page.PageType with
+        | 0x0Duy -> // Leaf table page: cells contain the rows
+            for cellPointer in page.CellPointers do
+                yield readLeafTableCell page cellPointer
+        | 0x05uy -> // Interior table page: cells point to child pages
+            for cellPointer in page.CellPointers do
+                yield! walkTableBtree databaseFile pageSize (int (readUInt32 page.Data cellPointer))
+
+            yield! walkTableBtree databaseFile pageSize (int (readUInt32 page.Data (page.HeaderOffset + 8)))
+        | pageType -> failwith $"Unexpected table b-tree page type: {pageType}"
+    }
+
+// Compare two values using SQLite's sort order: NULLs first, then numbers,
+// then text (byte-wise, i.e. the default BINARY collation), then blobs
+let compareValues (a: Value) (b: Value) =
+    match a, b with
+    | Null, Null -> 0
+    | Null, _ -> -1
+    | _, Null -> 1
+    | Integer a, Integer b -> compare a b
+    | Integer a, Real b -> compare (float a) b
+    | Real a, Integer b -> compare a (float b)
+    | Real a, Real b -> compare a b
+    | (Integer _ | Real _), _ -> -1
+    | _, (Integer _ | Real _) -> 1
+    | Text a, Text b -> sign (String.CompareOrdinal(a, b))
+    | Text _, Blob _ -> -1
+    | Blob _, Text _ -> 1
+    | Blob a, Blob b -> compare a b
+
+// Read the record stored in an index b-tree cell at the given offset. Index
+// records contain the indexed column values followed by the rowid.
+let readIndexCellRecord (page: Page) (offset: int) =
+    let _payloadSize, payloadSizeLength = readVarint page.Data offset
+    readRecord page.Data (offset + payloadSizeLength)
+
+// Search an index b-tree for entries whose key equals the target, yielding the
+// rowids of the matching rows in ascending order. Only the subtrees that can
+// contain the key are visited, so this stays fast for large indexes.
+let rec searchIndexBtree (databaseFile: FileStream) (pageSize: int) (pageNumber: int) (target: Value) =
+    seq {
+        let page = readPage databaseFile pageSize pageNumber
+
+        match page.PageType with
+        | 0x0Auy -> // Leaf index page: cells are just the entries
+            for cellPointer in page.CellPointers do
+                let record = readIndexCellRecord page cellPointer
+
+                if compareValues record[0] target = 0 then
+                    yield integerValue (Array.last record)
+        | 0x02uy -> // Interior index page: cells are a child page pointer plus an entry
+            // A cell's key is >= all keys in its child subtree, so skip children
+            // below the target and stop after passing a key above it. The
+            // right-most pointer (at offset 8 of the page header) covers keys
+            // greater than every cell's.
+            let mutable passedTarget = false
+
+            for cellPointer in page.CellPointers do
+                if not passedTarget then
+                    let record = readIndexCellRecord page (cellPointer + 4)
+                    let comparison = compareValues record[0] target
+
+                    if comparison >= 0 then
+                        yield! searchIndexBtree databaseFile pageSize (int (readUInt32 page.Data cellPointer)) target
+
+                    if comparison = 0 then
+                        yield integerValue (Array.last record)
+
+                    if comparison > 0 then
+                        passedTarget <- true
+
+            if not passedTarget then
+                yield! searchIndexBtree databaseFile pageSize (int (readUInt32 page.Data (page.HeaderOffset + 8))) target
+        | pageType -> failwith $"Unexpected index b-tree page type: {pageType}"
+    }
+
+// Find the record with the given rowid in a table b-tree, descending only into
+// the child pages whose rowid range contains it
+let rec findRowByRowid (databaseFile: FileStream) (pageSize: int) (pageNumber: int) (rowid: int64) =
+    let page = readPage databaseFile pageSize pageNumber
+
+    match page.PageType with
+    | 0x0Duy ->
+        page.CellPointers
+        |> Array.tryPick (fun cellPointer ->
+            let cellRowid, record = readLeafTableCell page cellPointer
+            if cellRowid = rowid then Some record else None)
+    | 0x05uy ->
+        // An interior cell's rowid is >= all rowids in its child subtree
+        page.CellPointers
+        |> Array.tryFind (fun cellPointer -> fst (readVarint page.Data (cellPointer + 4)) >= rowid)
+        |> function
+            | Some cellPointer -> findRowByRowid databaseFile pageSize (int (readUInt32 page.Data cellPointer)) rowid
+            | None -> findRowByRowid databaseFile pageSize (int (readUInt32 page.Data (page.HeaderOffset + 8))) rowid
+    | pageType -> failwith $"Unexpected table b-tree page type: {pageType}"
+
+// Read the rows of the sqlite_schema table, which are stored on page 1.
+// Each row is: type, name, tbl_name, rootpage, sql
+let readSchemaRows (databaseFile: FileStream) (pageSize: int) =
+    let page = readPage databaseFile pageSize 1
+    [| for cellPointer in page.CellPointers -> snd (readLeafTableCell page cellPointer) |]
+
+// Find the sqlite_schema row for the given table.
+// Each row is: type, name, tbl_name, rootpage, sql
+let findTableSchemaRow (databaseFile: FileStream) (pageSize: int) (tableName: string) =
+    readSchemaRows databaseFile pageSize
+    |> Array.tryFind (fun row -> row[0] = Text "table" && textValue row[2] = tableName)
+    |> function
+        | Some row -> row
+        | None -> failwith $"Table not found: {tableName}"
+
+// Find an index on the given table whose first indexed column matches, and
+// return its root page number. The indexed column is parsed from the CREATE
+// INDEX statement, e.g. "CREATE INDEX idx_companies_country on companies (country)".
+let findIndexRootPage (databaseFile: FileStream) (pageSize: int) (tableName: string) (columnName: string) =
+    readSchemaRows databaseFile pageSize
+    |> Array.tryPick (fun row ->
+        if row[0] = Text "index" && textValue row[2] = tableName then
+            let m =
+                Regex.Match(textValue row[4], @"\(\s*[""'`\[]?([\w ]+?)[""'`\]]?\s*[,)]")
+
+            if m.Success && m.Groups[1].Value = columnName then
+                Some(int (integerValue row[3]))
+            else
+                None
+        else
+            None)
+
+// A column definition from a CREATE TABLE statement. Columns declared as
+// "integer primary key" are aliases for the rowid: their values are stored as
+// NULL in the record, and the actual value is the cell's rowid.
+type Column = { Name: string; IsRowIdAlias: bool }
+
+// Extract the ordered column definitions from a CREATE TABLE statement
+let parseCreateTableColumns (sql: string) =
+    // The column definitions are the comma-separated list between the outermost parentheses
+    let columnDefs = sql[sql.IndexOf('(') + 1 .. sql.LastIndexOf(')') - 1]
+
+    // Split on commas, ignoring those nested in parentheses (e.g. "varchar(255)")
+    let defs =
+        let mutable depth = 0
+        let mutable current = StringBuilder()
+
+        [ for c in columnDefs do
+              match c with
+              | '(' ->
+                  depth <- depth + 1
+                  current.Append(c) |> ignore
+              | ')' ->
+                  depth <- depth - 1
+                  current.Append(c) |> ignore
+              | ',' when depth = 0 ->
+                  yield current.ToString()
+                  current <- StringBuilder()
+              | c -> current.Append(c) |> ignore
+
+          yield current.ToString() ]
+
+    // The column name is the first token of each definition. Definitions
+    // starting with a constraint keyword are table constraints, not columns.
+    let constraintKeywords = [ "primary"; "foreign"; "unique"; "check"; "constraint" ]
+
+    [| for def in defs do
+           let def = def.Trim()
+
+           // The name is the first token, or everything up to the closing quote
+           // for quoted names (which may contain spaces, e.g. "size range")
+           let name =
+               match def[0] with
+               | '"'
+               | '`'
+               | '\'' -> def[1 .. def.IndexOf(def[0], 1) - 1]
+               | '[' -> def[1 .. def.IndexOf(']') - 1]
+               | _ ->
+                   let tokens = def.Split(' ', '\t', '\n', '\r')
+                   tokens[0]
+
+           if not (List.contains (name.ToLowerInvariant()) constraintKeywords) then
+               { Name = name
+                 IsRowIdAlias = Regex.IsMatch(def, @"integer\s+primary\s+key", RegexOptions.IgnoreCase) } |]
+
+// Format a value for query output
+let formatValue (value: Value) =
+    match value with
+    | Null -> ""
+    | Integer integer -> string integer
+    | Real real -> string real
+    | Text text -> text
+    | Blob blob -> Encoding.UTF8.GetString(blob)
+
+[<EntryPoint>]
+let main args =
+    // Parse arguments
+    let path, command =
+        match args with
+        | [||] -> failwith "Missing <database path> and <command>"
+        | [| _ |] -> failwith "Missing <command>"
+        | _ -> args[0], args[1]
+
+    use databaseFile = File.OpenRead(path)
+
+    // The database page size is a 2-byte big-endian value at offset 16 of the file header
+    databaseFile.Seek(16L, SeekOrigin.Begin) |> ignore // Skip the first 16 bytes
+    let pageSizeBytes = Array.zeroCreate<byte> 2
+    databaseFile.ReadExactly(pageSizeBytes, 0, 2)
+    let pageSize = int (BinaryPrimitives.ReadUInt16BigEndian(pageSizeBytes))
+
+    // Parse command and act accordingly
+    match command with
+    | ".dbinfo" ->
+        printfn $"database page size: {pageSize}"
+
+        // Each cell on page 1 is a row of sqlite_schema, i.e. a table
+        // (assuming no indexes, views or triggers)
+        let schemaRows = readSchemaRows databaseFile pageSize
+        printfn $"number of tables: {schemaRows.Length}"
+        0
+    | ".tables" ->
+        // Table names are stored in the tbl_name column (index 2) of sqlite_schema.
+        // Tables prefixed with sqlite_ are internal to SQLite.
+        let tableNames =
+            readSchemaRows databaseFile pageSize
+            |> Array.map (fun row -> textValue row[2])
+            |> Array.filter (fun name -> not (name.StartsWith("sqlite_")))
+            |> Array.sort
+
+        printfn $"""{String.Join(" ", tableNames)}"""
+        0
+    | query when query.StartsWith("SELECT COUNT(*) FROM ", StringComparison.OrdinalIgnoreCase) ->
+        // No need for a full-blown SQL parser yet: the table name is the last word
+        let tableName = query.Split(' ') |> Array.last
+
+        // The number of rows is the number of leaf cells in the table's b-tree
+        let schemaRow = findTableSchemaRow databaseFile pageSize tableName
+
+        let rowCount =
+            walkTableBtree databaseFile pageSize (int (integerValue schemaRow[3])) |> Seq.length
+
+        printfn $"{rowCount}"
+        0
+    | query when query.StartsWith("SELECT ", StringComparison.OrdinalIgnoreCase) ->
+        // SELECT <column1>,<column2>,... FROM <table> [WHERE <column> = <literal>]
+        let m =
+            Regex.Match(
+                query,
+                @"^SELECT\s+([\w\s,]+?)\s+FROM\s+(\w+)(?:\s+WHERE\s+(\w+)\s*=\s*(?:'([^']*)'|(\d+)))?\s*$",
+                RegexOptions.IgnoreCase
+            )
+
+        if not m.Success then
+            failwith $"Unsupported query: {query}"
+
+        let columnNames = m.Groups[1].Value.Split(',') |> Array.map (fun name -> name.Trim())
+        let tableName = m.Groups[2].Value
+
+        // The WHERE clause compares a column against a string or integer literal
+        let whereFilter =
+            if m.Groups[3].Success then
+                let literal =
+                    if m.Groups[4].Success then
+                        Text m.Groups[4].Value
+                    else
+                        Integer(int64 m.Groups[5].Value)
+
+                Some(m.Groups[3].Value, literal)
+            else
+                None
+
+        // The order of a column's values in a record matches the order of the
+        // columns in the CREATE TABLE statement (stored in sqlite_schema.sql)
+        let schemaRow = findTableSchemaRow databaseFile pageSize tableName
+        let columns = parseCreateTableColumns (textValue schemaRow[4])
+
+        let columnIndexes =
+            [| for columnName in columnNames ->
+                   columns
+                   |> Array.tryFindIndex (fun column -> column.Name = columnName)
+                   |> function
+                       | Some index -> index
+                       | None -> failwith $"Column not found: {columnName}" |]
+
+        // Resolve the WHERE column to its index in the record, and account for
+        // rowid aliasing when reading any column's value
+        let columnValue (rowid: int64) (record: Value[]) (columnIndex: int) =
+            match record[columnIndex] with
+            | Null when columns[columnIndex].IsRowIdAlias -> Integer rowid
+            | value -> value
+
+        let matchesFilter (rowid: int64) (record: Value[]) =
+            match whereFilter with
+            | None -> true
+            | Some(columnName, literal) ->
+                columns
+                |> Array.tryFindIndex (fun column -> column.Name = columnName)
+                |> function
+                    | Some index -> columnValue rowid record index = literal
+                    | None -> failwith $"Column not found: {columnName}"
+
+        let printRow (rowid: int64) (record: Value[]) =
+            let values =
+                [| for columnIndex in columnIndexes -> columnValue rowid record columnIndex |]
+
+            printfn $"""{String.Join("|", Array.map formatValue values)}"""
+
+        let rootPage = int (integerValue schemaRow[3])
+
+        // If an index exists on the WHERE column, search it for the matching
+        // rowids and fetch only those rows instead of scanning the whole table
+        let indexRootPage =
+            match whereFilter with
+            | Some(columnName, _) -> findIndexRootPage databaseFile pageSize tableName columnName
+            | None -> None
+
+        match indexRootPage, whereFilter with
+        | Some indexRootPage, Some(_, literal) ->
+            for rowid in searchIndexBtree databaseFile pageSize indexRootPage literal do
+                match findRowByRowid databaseFile pageSize rootPage rowid with
+                | Some record -> printRow rowid record
+                | None -> failwith $"Row not found for rowid: {rowid}"
+        | _ ->
+            for rowid, record in walkTableBtree databaseFile pageSize rootPage do
+                if matchesFilter rowid record then
+                    printRow rowid record
+
+        0
+    | _ -> failwith $"Invalid command: {command}"
