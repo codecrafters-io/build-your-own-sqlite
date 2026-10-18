@@ -29,7 +29,7 @@ Time to move on to the next stage!
 
 Note: This section is for stages 2 and beyond.
 
-1. Ensure you have `zig (0.16)` installed locally
+1. Ensure you have `zig (0.17)` installed locally
 1. Run `./your_program.sh` to run your program, which is implemented in
    `src/main.zig`.
 1. Run `codecrafters submit` to submit your solution to CodeCrafters. Test
