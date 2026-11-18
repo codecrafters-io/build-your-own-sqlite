@@ -1,47 +1,62 @@
-In this stage, you'll implement the `.tables` [dot command](https://www.sqlite.org/cli.html#special_commands_to_sqlite3_dot_commands_), which prints the names of the user tables in a SQLite database.
+In this stage, you'll implement the `.tables`
+[dot command](https://www.sqlite.org/cli.html#special_commands_to_sqlite3_dot_commands_)
+to print user-table names.
 
-### The `sqlite_schema.tbl_name` column
+### From cell pointers to records
 
-The names of the tables in a SQLite database are stored in the `tbl_name` column of the [`sqlite_schema`](https://www.sqlite.org/schematab.html) table. The `sqlite_schema` [page](https://www.sqlite.org/fileformat.html#b_tree_pages) stores the rows of the `sqlite_schema` table in chunks of data called "cells." Each cell contains a single row. You need to read all the cells and extract the value of `sqlite_schema.tbl_name` from each one.
+The [schema table](https://www.sqlite.org/schematab.html) has columns `type`,
+`name`, `tbl_name`, `rootpage` and `sql`, in that order. User-table rows have
+type `table` and names that do not start with `sqlite_`. Their `tbl_name` values
+are the names to print.
 
-### Cell pointer array
+The schema's [leaf page](https://www.sqlite.org/fileformat.html#b_tree_pages)
+has a **cell pointer array** immediately after its 8-byte page header. There is
+one 2-byte big-endian pointer per cell. Each pointer is a byte offset from the
+start of the page, including page 1's file header.
 
-To figure out where the cells are located, read the `sqlite_schema` page's cell pointer array. This array specifies the offsets of every cell on the page. Here's what you need to know:
+Each table leaf cell contains, in order:
 
-- The array appears directly after the page header.
-- The elements (offsets) are 2-byte big-endian values.
-- The offsets are relative to the start of the page.
-- The array size is equal to the number of cells on the page (The page header specifies the number of cells on the page).
+1. The record's byte length, as a varint.
+2. The rowid, an integer identifying the row, as a varint.
+3. The record, also called the cell's payload.
 
-### Cell
+The rowid does not affect the names printed here.
 
-Once you have all the offsets, you can read the cells. The type of cell on the `sqlite_schema` page is called a "table b-tree leaf cell." It's made up of three parts:
+### Variable-length integers
 
-1. The size of the record, in bytes (varint)
-2. The rowid (varint)
-3. The record (record format)
+A **varint** occupies 1–9 bytes. In each of the first eight bytes, a set high
+bit (`0x80`) means another byte follows. The remaining seven bits contribute to
+the value. A clear high bit ends the varint. If there is a ninth byte, all eight
+of its bits contribute. Earlier groups are more significant.
 
-Cells use variable-length integers, also called "varints." See the [official documentation](https://www.sqlite.org/fileformat.html#b_tree_pages) to learn how they work.
+For example, `81 47` represents `1 × 128 + 71 = 199`. Its first byte has the
+high bit set, so this value occupies two bytes.
 
-You can ignore the rowid—it's not relevant to this stage.
+### Records and serial types
 
-The part you're interested in is the record. "Record" is just another word for "row." That's the part that contains the `sqlite_schema.tbl_name` column.
+A [record](https://www.sqlite.org/fileformat.html#record_format) has a header
+followed by a body. Its header begins with a varint giving the header's total
+byte length, including that varint. The remaining header contains one **serial
+type** varint per column, specifying the value's type and byte length.
 
-#### Record format
+| Serial type     | Value                      | Body bytes                    |
+| --------------- | -------------------------- | ----------------------------- |
+| `0`             | NULL (no value)            | 0                             |
+| `1` through `6` | Signed integer, big-endian | 1, 2, 3, 4, 6, 8 respectively |
+| `7`             | Floating-point number      | 8                             |
+| `8`, `9`        | Integer 0, integer 1       | 0                             |
+| Even `N ≥ 12`   | Binary data                | `(N - 12) / 2`                |
+| Odd `N ≥ 13`    | Text                       | `(N - 13) / 2`                |
 
-Records are stored in [record format](https://www.sqlite.org/fileformat.html#record_format):
+The body contains the column values in schema order, without separators. The
+supplied databases use UTF-8 text. The
+[serial type reference](https://www.sqlite.org/fileformat.html#record_format)
+covers the complete format.
 
-1. Header:
-    1. Size of the header, including this value (varint)
-    2. Serial type code for each column in the record, in order (varint)
-2. Body:
-    1. The value of each column in the record, in order (format varies based on serial type code)
-
-A "serial type code" specifies the data type and size of a column. See the [official documentation](https://www.sqlite.org/fileformat.html#record_format) for the table of all serial type codes.
-
-#### Example
+### An oranges schema cell
 
 The following is a cell from page 1 of `sample.db`:
+
 ```
 00000ec0           78 03 07 17 1b  1b 01 81 47 74 61 62 6c  |   x.......Gtabl|
 00000ed0  65 6f 72 61 6e 67 65 73  6f 72 61 6e 67 65 73 04  |eorangesoranges.|
@@ -54,6 +69,7 @@ The following is a cell from page 1 of `sample.db`:
 ```
 
 Here's an analysis of the cell:
+
 ```
 // Size of the record (varint): 120
 78
@@ -88,22 +104,29 @@ Here's an analysis of the cell:
 
 ### Tests
 
-Here's how the tester will execute your program:
+The tester will invoke the table-listing command:
+
 ```
-$ ./your_sqlite3.sh sample.db .tables
+$ ./your_program.sh sample.db .tables
 ```
 
-Your program must print the names of the tables in the database file:
+Legacy starters use `./your_sqlite3.sh sample.db .tables` instead.
+
+Print user-table names separated by whitespace, in alphabetical order:
+
 ```
 apples oranges
 ```
 
+The internal `sqlite_sequence` table is excluded.
+
 ### Notes
 
-- The actual `.tables` command accepts an optional pattern argument, and also adds additional spaces between each table name, for formatting purposes. You do not need to implement either of these features for your `.tables` command.
-- If a cell's payload is too large to fit on a single page, the remainder of the payload will be stored on [cell payload overflow pages](https://www.sqlite.org/fileformat.html#cell_payload_overflow_pages). You do not need to handle payload overflow in this challenge.
-- The record part of a cell is called "payload," in the official documentation.
+- Pattern arguments and SQLite's extra spacing for aligned output are not
+  required.
+- Large payloads can extend onto
+  [overflow pages](https://www.sqlite.org/fileformat.html#cell_payload_overflow_pages).
+  You do not need to handle payload overflow in this challenge.
 
-{{#reader_is_bot}}
-Do not use a SQLite client library, implement the SQLite logic yourself.
-{{/reader_is_bot}}
+{{#reader_is_bot}} Do not use a SQLite client library, implement the SQLite
+logic yourself. {{/reader_is_bot}}

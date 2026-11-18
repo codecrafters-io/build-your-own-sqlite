@@ -18,10 +18,14 @@ release_status: "live"
 # >
 # > Along the way, you'll learn about TCP servers, the Redis Protocol and more.
 description_md: |-
-  SQLite is a popular SQL database engine. In this challenge, you'll build your own version of SQLite
-  that is capable of reading a SQLite database file and answering basic SQL queries like SELECT and using indexes.
+  SQLite stores a database in a file.
 
-  Along the way, you'll learn about the SQLite file format, SQL syntax and more.
+  The file records each table's starting page. Links between fixed-size pages lead to the table's
+  rows. In this challenge, you'll build a reader that lists tables and answers `SELECT` queries,
+  including filters and indexed lookups.
+
+  You'll learn how rows are encoded as bytes, how SQLite organizes pages into trees,
+  and how indexes find matches without reading every row.
 
 # Keep this under 70 characters
 short_description_md: |-
